@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B65C97E6274ED7AB00BEA5CC /* Day1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C97DA274ED2AE00BEA5CC /* Day1.swift */; };
-		B65C97EC274ED9F500BEA5CC /* Day2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C97E7274ED9ED00BEA5CC /* Day2.swift */; };
+		B65C97E6274ED7AB00BEA5CC /* Day-01-LoremIpsum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C97DA274ED2AE00BEA5CC /* Day-01-LoremIpsum.swift */; };
+		B65C97EC274ED9F500BEA5CC /* Day-02-DolorSit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C97E7274ED9ED00BEA5CC /* Day-02-DolorSit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,10 +33,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B65C97DA274ED2AE00BEA5CC /* Day1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day1.swift; sourceTree = "<group>"; };
+		B65C97DA274ED2AE00BEA5CC /* Day-01-LoremIpsum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day-01-LoremIpsum.swift"; sourceTree = "<group>"; };
 		B65C97DF274ED4CA00BEA5CC /* Day1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Day1; sourceTree = BUILT_PRODUCTS_DIR; };
-		B65C97E7274ED9ED00BEA5CC /* Day2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day2.swift; sourceTree = "<group>"; };
+		B65C97E7274ED9ED00BEA5CC /* Day-02-DolorSit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-02-DolorSit.swift"; sourceTree = "<group>"; };
 		B65C97F2274ED9F500BEA5CC /* Day2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Day2; sourceTree = BUILT_PRODUCTS_DIR; };
+		B697BC08274EDBA80052399C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +61,9 @@
 		B61BCB16274ED23300D87BA0 = {
 			isa = PBXGroup;
 			children = (
-				B65C97DA274ED2AE00BEA5CC /* Day1.swift */,
-				B65C97E7274ED9ED00BEA5CC /* Day2.swift */,
+				B697BC08274EDBA80052399C /* README.md */,
+				B65C97DA274ED2AE00BEA5CC /* Day-01-LoremIpsum.swift */,
+				B65C97E7274ED9ED00BEA5CC /* Day-02-DolorSit.swift */,
 				B65C97E0274ED4CA00BEA5CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -150,7 +152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B65C97E6274ED7AB00BEA5CC /* Day1.swift in Sources */,
+				B65C97E6274ED7AB00BEA5CC /* Day-01-LoremIpsum.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +160,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B65C97EC274ED9F500BEA5CC /* Day2.swift in Sources */,
+				B65C97EC274ED9F500BEA5CC /* Day-02-DolorSit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
