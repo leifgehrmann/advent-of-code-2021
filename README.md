@@ -4,4 +4,4 @@ My attempts at the [Advent of Code 2021](https://adventofcode.com/2021) challeng
 
 ## Attribution
 
-* Hero background image by Sharon McCutcheon: https://unsplash.com/photos/62vi3TG5EDg
+* Hero background image by [Sharon McCutcheon](https://unsplash.com/photos/62vi3TG5EDg) on [Unsplash](https://unsplash.com/).
