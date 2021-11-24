@@ -33,11 +33,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B637EE41274EE69200B1F5CE /* day-02.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "day-02.yml"; path = ".github/workflows/day-02.yml"; sourceTree = "<group>"; };
 		B65C97DA274ED2AE00BEA5CC /* Day-01-LoremIpsum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day-01-LoremIpsum.swift"; sourceTree = "<group>"; };
-		B65C97DF274ED4CA00BEA5CC /* Day1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Day1; sourceTree = BUILT_PRODUCTS_DIR; };
+		B65C97DF274ED4CA00BEA5CC /* Day-01 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-01"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B65C97E7274ED9ED00BEA5CC /* Day-02-DolorSit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-02-DolorSit.swift"; sourceTree = "<group>"; };
-		B65C97F2274ED9F500BEA5CC /* Day2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Day2; sourceTree = BUILT_PRODUCTS_DIR; };
+		B65C97F2274ED9F500BEA5CC /* Day-02 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-02"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B697BC08274EDBA80052399C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B697BC0C274EE5CC0052399C /* day-01.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "day-01.yml"; path = ".github/workflows/day-01.yml"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,8 +64,8 @@
 			isa = PBXGroup;
 			children = (
 				B697BC08274EDBA80052399C /* README.md */,
-				B65C97DA274ED2AE00BEA5CC /* Day-01-LoremIpsum.swift */,
-				B65C97E7274ED9ED00BEA5CC /* Day-02-DolorSit.swift */,
+				B697BC0E274EE60B0052399C /* Scripts */,
+				B697BC0D274EE5D90052399C /* GitHub Workflows */,
 				B65C97E0274ED4CA00BEA5CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -71,18 +73,36 @@
 		B65C97E0274ED4CA00BEA5CC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B65C97DF274ED4CA00BEA5CC /* Day1 */,
-				B65C97F2274ED9F500BEA5CC /* Day2 */,
+				B65C97DF274ED4CA00BEA5CC /* Day-01 */,
+				B65C97F2274ED9F500BEA5CC /* Day-02 */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B697BC0D274EE5D90052399C /* GitHub Workflows */ = {
+			isa = PBXGroup;
+			children = (
+				B697BC0C274EE5CC0052399C /* day-01.yml */,
+				B637EE41274EE69200B1F5CE /* day-02.yml */,
+			);
+			name = "GitHub Workflows";
+			sourceTree = "<group>";
+		};
+		B697BC0E274EE60B0052399C /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				B65C97DA274ED2AE00BEA5CC /* Day-01-LoremIpsum.swift */,
+				B65C97E7274ED9ED00BEA5CC /* Day-02-DolorSit.swift */,
+			);
+			name = Scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B65C97DE274ED4CA00BEA5CC /* Day1 */ = {
+		B65C97DE274ED4CA00BEA5CC /* Day-01 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B65C97E2274ED4CA00BEA5CC /* Build configuration list for PBXNativeTarget "Day1" */;
+			buildConfigurationList = B65C97E2274ED4CA00BEA5CC /* Build configuration list for PBXNativeTarget "Day-01" */;
 			buildPhases = (
 				B65C97DB274ED4CA00BEA5CC /* Sources */,
 				B65C97DC274ED4CA00BEA5CC /* Frameworks */,
@@ -92,14 +112,14 @@
 			);
 			dependencies = (
 			);
-			name = Day1;
+			name = "Day-01";
 			productName = Day1;
-			productReference = B65C97DF274ED4CA00BEA5CC /* Day1 */;
+			productReference = B65C97DF274ED4CA00BEA5CC /* Day-01 */;
 			productType = "com.apple.product-type.tool";
 		};
-		B65C97E9274ED9F500BEA5CC /* Day2 */ = {
+		B65C97E9274ED9F500BEA5CC /* Day-02 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B65C97EF274ED9F500BEA5CC /* Build configuration list for PBXNativeTarget "Day2" */;
+			buildConfigurationList = B65C97EF274ED9F500BEA5CC /* Build configuration list for PBXNativeTarget "Day-02" */;
 			buildPhases = (
 				B65C97EA274ED9F500BEA5CC /* Sources */,
 				B65C97ED274ED9F500BEA5CC /* Frameworks */,
@@ -109,9 +129,9 @@
 			);
 			dependencies = (
 			);
-			name = Day2;
+			name = "Day-02";
 			productName = Day1;
-			productReference = B65C97F2274ED9F500BEA5CC /* Day2 */;
+			productReference = B65C97F2274ED9F500BEA5CC /* Day-02 */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -141,8 +161,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B65C97DE274ED4CA00BEA5CC /* Day1 */,
-				B65C97E9274ED9F500BEA5CC /* Day2 */,
+				B65C97DE274ED4CA00BEA5CC /* Day-01 */,
+				B65C97E9274ED9F500BEA5CC /* Day-02 */,
 			);
 		};
 /* End PBXProject section */
@@ -441,7 +461,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B65C97E2274ED4CA00BEA5CC /* Build configuration list for PBXNativeTarget "Day1" */ = {
+		B65C97E2274ED4CA00BEA5CC /* Build configuration list for PBXNativeTarget "Day-01" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B65C97E3274ED4CA00BEA5CC /* Debug */,
@@ -450,7 +470,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B65C97EF274ED9F500BEA5CC /* Build configuration list for PBXNativeTarget "Day2" */ = {
+		B65C97EF274ED9F500BEA5CC /* Build configuration list for PBXNativeTarget "Day-02" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B65C97F0274ED9F500BEA5CC /* Debug */,
