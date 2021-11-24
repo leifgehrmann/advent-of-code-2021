@@ -11,5 +11,7 @@ jobs:
         with:
             swift-version: "5"
       - uses: actions/checkout@v2
-      - name: Get swift version
-        run: swift --version
+      - name: Run the script
+        run: |
+          xcrun --sdk macosx swiftc -parse-as-library Day-01*.swift -o ./Day01
+          ./Day01
