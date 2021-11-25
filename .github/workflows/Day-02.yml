@@ -2,6 +2,9 @@ name: Day-02-DolorSit
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '**Day-02**'
 
 jobs:
   build:
@@ -13,5 +16,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run script
         run: |
-          xcrun --sdk macosx swiftc -parse-as-library Day-02*.swift -o ./Day02
-          ./Day02
+          xcrun --sdk macosx swiftc -parse-as-library Day-02*.swift -o ./Day-02
+          ./Day-02
