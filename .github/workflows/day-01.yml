@@ -2,6 +2,9 @@ name: Day-01-LoremIpsum
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '**Day-01**'
 
 jobs:
   build:
