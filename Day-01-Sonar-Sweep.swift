@@ -34,6 +34,23 @@ func countIncreasesInDepth(depths: [Int]) -> Int {
     return numberOfIncreases
 }
 
+func countIncreasesInDepth(depths: [Int], withSlidingWindow: Int) -> Int {
+    let slidingWindow = withSlidingWindow
+    var numberOfIncreases = 0
+    var previousDepthSum: Int? = nil
+
+    for i in slidingWindow...depths.count-1-slidingWindow {
+        let currentDepths = depths[i-slidingWindow...i+slidingWindow]
+        let currentDepthSum = currentDepths.reduce(0, +)
+        if previousDepthSum != nil, currentDepthSum > previousDepthSum! {
+            numberOfIncreases += 1
+        }
+        previousDepthSum = currentDepthSum
+    }
+    
+    return numberOfIncreases
+}
+
 @main
 enum Script {
     static func main() throws {
@@ -43,6 +60,7 @@ enum Script {
         // flatMap will remove any Optional Integers
         let depths = depthStrings.map { Int($0) }.compactMap { $0 }
 
-        print(countIncreasesInDepth(depths: depths))
+        print("Part 1: ", countIncreasesInDepth(depths: depths))
+        print("Part 2: ", countIncreasesInDepth(depths: depths, withSlidingWindow: 1))
     }
 }
