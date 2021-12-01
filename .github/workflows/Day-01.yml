@@ -1,4 +1,4 @@
-name: Day-01
+name: Day-01-Sonar-Sweep
 
 on:
   workflow_dispatch:
