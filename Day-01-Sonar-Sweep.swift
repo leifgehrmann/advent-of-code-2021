@@ -20,11 +20,29 @@ func readFileInCwd(file: String) throws -> String {
     }
 }
 
+func countIncreasesInDepth(depths: [Int]) -> Int {
+    var numberOfIncreases = 0
+    var previousDepth: Int? = nil
+    
+    for depth in depths {
+        if previousDepth != nil, depth > previousDepth! {
+            numberOfIncreases += 1
+        }
+        previousDepth = depth
+    }
+
+    return numberOfIncreases
+}
+
 @main
 enum Script {
     static func main() throws {
-        print("Hello Xcode (Day 1)")
         let input = try readFileInCwd(file: "/Day-01-Input.txt")
-        print(input)
+        let depthStrings = input.split(separator: "\n")
+        
+        // flatMap will remove any Optional Integers
+        let depths = depthStrings.map { Int($0) }.compactMap { $0 }
+
+        print(countIncreasesInDepth(depths: depths))
     }
 }
