@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B65C97E6274ED7AB00BEA5CC /* Day-01-Sonar-Sweep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C97DA274ED2AE00BEA5CC /* Day-01-Sonar-Sweep.swift */; };
-		B65C97EC274ED9F500BEA5CC /* Day-02-DolorSit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C97E7274ED9ED00BEA5CC /* Day-02-DolorSit.swift */; };
+		B65C97EC274ED9F500BEA5CC /* Day-02-Dive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C97E7274ED9ED00BEA5CC /* Day-02-Dive.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,9 +36,10 @@
 		B637EE41274EE69200B1F5CE /* Day-02.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "Day-02.yml"; path = ".github/workflows/Day-02.yml"; sourceTree = "<group>"; };
 		B637EE42274EF4A600B1F5CE /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B637EE4327502C3700B1F5CE /* Day-01-Input.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Day-01-Input.txt"; sourceTree = "<group>"; };
+		B637EE4427588B9300B1F5CE /* Day-02-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-02-Input.txt"; sourceTree = "<group>"; };
 		B65C97DA274ED2AE00BEA5CC /* Day-01-Sonar-Sweep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day-01-Sonar-Sweep.swift"; sourceTree = "<group>"; };
 		B65C97DF274ED4CA00BEA5CC /* Day-01 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-01"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B65C97E7274ED9ED00BEA5CC /* Day-02-DolorSit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-02-DolorSit.swift"; sourceTree = "<group>"; };
+		B65C97E7274ED9ED00BEA5CC /* Day-02-Dive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-02-Dive.swift"; sourceTree = "<group>"; };
 		B65C97F2274ED9F500BEA5CC /* Day-02 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-02"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B697BC08274EDBA80052399C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B697BC0C274EE5CC0052399C /* Day-01.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "Day-01.yml"; path = ".github/workflows/Day-01.yml"; sourceTree = "<group>"; };
@@ -96,7 +97,8 @@
 			children = (
 				B65C97DA274ED2AE00BEA5CC /* Day-01-Sonar-Sweep.swift */,
 				B637EE4327502C3700B1F5CE /* Day-01-Input.txt */,
-				B65C97E7274ED9ED00BEA5CC /* Day-02-DolorSit.swift */,
+				B637EE4427588B9300B1F5CE /* Day-02-Input.txt */,
+				B65C97E7274ED9ED00BEA5CC /* Day-02-Dive.swift */,
 			);
 			name = Scripts;
 			sourceTree = "<group>";
@@ -184,7 +186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B65C97EC274ED9F500BEA5CC /* Day-02-DolorSit.swift in Sources */,
+				B65C97EC274ED9F500BEA5CC /* Day-02-Dive.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

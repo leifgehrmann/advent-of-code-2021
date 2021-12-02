@@ -5,6 +5,7 @@ My attempts at the [Advent of Code 2021](https://adventofcode.com/2021) challeng
 ## Solutions
 
 * [![Day-01-Sonar-Sweep](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-01.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-01.yml?query=branch%3Amain)
+* [![Day-02-Dive](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-02.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-02.yml?query=branch%3Amain)
 
 ## Attribution
 
