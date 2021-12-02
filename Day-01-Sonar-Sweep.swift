@@ -12,7 +12,7 @@ func getCwd() -> String {
 }
 
 func readFileInCwd(file: String) throws -> String {
-    let inputPath = URL(fileURLWithPath: getCwd() + "/Day-01-Input.txt")
+    let inputPath = URL(fileURLWithPath: getCwd() + file)
     do {
         return try String(contentsOf: inputPath, encoding: .utf8)
     } catch {
