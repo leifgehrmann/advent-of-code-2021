@@ -50,6 +50,7 @@
 		B637EE4D2759E02500B1F5CE /* Day-03 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-03"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B637EE4E2759E05C00B1F5CE /* Day-03-Binary-Diagnostic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-03-Binary-Diagnostic.swift"; sourceTree = "<group>"; };
 		B637EE502759E06C00B1F5CE /* Day-03-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-03-Input.txt"; sourceTree = "<group>"; };
+		B637EE512759EBB100B1F5CE /* Day-03.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-03.yml"; path = ".github/workflows/Day-03.yml"; sourceTree = "<group>"; };
 		B65C97DA274ED2AE00BEA5CC /* Day-01-Sonar-Sweep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day-01-Sonar-Sweep.swift"; sourceTree = "<group>"; };
 		B65C97DF274ED4CA00BEA5CC /* Day-01 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-01"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B65C97E7274ED9ED00BEA5CC /* Day-02-Dive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-02-Dive.swift"; sourceTree = "<group>"; };
@@ -109,6 +110,7 @@
 			children = (
 				B697BC0C274EE5CC0052399C /* Day-01.yml */,
 				B637EE41274EE69200B1F5CE /* Day-02.yml */,
+				B637EE512759EBB100B1F5CE /* Day-03.yml */,
 			);
 			name = "GitHub Workflows";
 			sourceTree = "<group>";
