@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B637EE452759E02500B1F5CE"
-               BuildableName = "Day-03"
-               BlueprintName = "Day-03"
+               BlueprintIdentifier = "B637EE52275AB4E600B1F5CE"
+               BuildableName = "Day-04"
+               BlueprintName = "Day-04"
                ReferencedContainer = "container:advent-of-code-2021.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B637EE452759E02500B1F5CE"
-            BuildableName = "Day-03"
-            BlueprintName = "Day-03"
+            BlueprintIdentifier = "B637EE52275AB4E600B1F5CE"
+            BuildableName = "Day-04"
+            BlueprintName = "Day-04"
             ReferencedContainer = "container:advent-of-code-2021.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -68,9 +68,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B637EE452759E02500B1F5CE"
-            BuildableName = "Day-03"
-            BlueprintName = "Day-03"
+            BlueprintIdentifier = "B637EE52275AB4E600B1F5CE"
+            BuildableName = "Day-04"
+            BlueprintName = "Day-04"
             ReferencedContainer = "container:advent-of-code-2021.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
