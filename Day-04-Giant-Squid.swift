@@ -1,26 +1,7 @@
 import Foundation
 
 enum ScriptError: Error {
-    case FileCouldNotBeRead
-    // NoBingo shouldn't happen because all draw numbers should exist in all boards,
-    // but it is still a valid edge case.
     case NoBingo
-}
-
-func getCwd() -> String {
-    if let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"] {
-        return srcRoot
-    }
-    return FileManager.default.currentDirectoryPath
-}
-
-func readFileInCwd(file: String) throws -> String {
-    let inputPath = URL(fileURLWithPath: getCwd() + file)
-    do {
-        return try String(contentsOf: inputPath, encoding: .utf8)
-    } catch {
-        throw ScriptError.FileCouldNotBeRead
-    }
 }
 
 class Board {
