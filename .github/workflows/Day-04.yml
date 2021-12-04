@@ -16,5 +16,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run script
         run: |
-          xcrun --sdk macosx swiftc -parse-as-library Day-04*.swift -o ./Day-04
+          xcrun --sdk macosx swiftc -parse-as-library Day-04*.swift InputReader.swift -o ./Day-04
           ./Day-04
