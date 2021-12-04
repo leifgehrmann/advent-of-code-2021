@@ -1,25 +1,5 @@
 import Foundation
 
-enum ScriptError: Error {
-    case FileCouldNotBeRead
-}
-
-func getCwd() -> String {
-    if let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"] {
-        return srcRoot
-    }
-    return FileManager.default.currentDirectoryPath
-}
-
-func readFileInCwd(file: String) throws -> String {
-    let inputPath = URL(fileURLWithPath: getCwd() + file)
-    do {
-        return try String(contentsOf: inputPath, encoding: .utf8)
-    } catch {
-        throw ScriptError.FileCouldNotBeRead
-    }
-}
-
 func countIncreasesInDepth(depths: [Int]) -> Int {
     var numberOfIncreases = 0
     var previousDepth: Int? = nil

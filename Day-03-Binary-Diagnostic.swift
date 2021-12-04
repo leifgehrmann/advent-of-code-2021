@@ -1,25 +1,5 @@
 import Foundation
 
-enum ScriptError: Error {
-    case FileCouldNotBeRead
-}
-
-func getCwd() -> String {
-    if let srcRoot = ProcessInfo.processInfo.environment["SRCROOT"] {
-        return srcRoot
-    }
-    return FileManager.default.currentDirectoryPath
-}
-
-func readFileInCwd(file: String) throws -> String {
-    let inputPath = URL(fileURLWithPath: getCwd() + file)
-    do {
-        return try String(contentsOf: inputPath, encoding: .utf8)
-    } catch {
-        throw ScriptError.FileCouldNotBeRead
-    }
-}
-
 func part1(signals: [String]) -> Int {
     let bitSequenceLength = 12
     var commonBitSequence = Array(repeating: 0, count: bitSequenceLength)
