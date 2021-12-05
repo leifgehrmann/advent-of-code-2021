@@ -8,6 +8,7 @@ My attempts at the [Advent of Code 2021](https://adventofcode.com/2021) challeng
 * [![Day-02-Dive](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-02.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-02.yml?query=branch%3Amain)
 * [![Day-03-Binary-Diagnostic](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-03.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-03.yml?query=branch%3Amain)
 * [![Day-04-Giant-Squid](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-04.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-04.yml?query=branch%3Amain)
+* [![Day-05-Hydrothermal-Venture](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-05.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-05.yml?query=branch%3Amain)
 
 ## Attribution
 
