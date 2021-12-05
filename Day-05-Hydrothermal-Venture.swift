@@ -1,7 +1,7 @@
 import Foundation
 
 enum ScriptError: Error {
-    case DiagonalVentDetected
+    case UnrenderableVentDetected
 }
 
 struct Point {
@@ -21,18 +21,39 @@ func draw(_ vent: Vent, on ventMap: inout [[Int8]]) throws -> Void {
         for y in minY...maxY {
             ventMap[y][vent.start.x] += 1
         }
-    } else if vent.start.y == vent.end.y {
+        return
+    }
+    if vent.start.y == vent.end.y {
         let minX = min(vent.start.x, vent.end.x)
         let maxX = max(vent.start.x, vent.end.x)
         for x in minX...maxX {
             ventMap[vent.start.y][x] += 1
         }
+        return
+    }
+    
+    let dx = vent.start.x - vent.end.x
+    let dy = vent.start.y - vent.end.y
+    if  abs(dx) != abs(dy) {
+        throw ScriptError.UnrenderableVentDetected
+    }
+    
+    if (vent.start.y < vent.end.y) {
+        var x = vent.start.x
+        for y in vent.start.y...vent.end.y {
+            ventMap[y][x] += 1
+            x += dx > 0 ? -1 : 1
+        }
     } else {
-        throw ScriptError.DiagonalVentDetected
+        var x = vent.end.x
+        for y in vent.end.y...vent.start.y {
+            ventMap[y][x] += 1
+            x += dx > 0 ? 1 : -1
+        }
     }
 }
 
-func part1(vents: [Vent]) throws -> Int {
+func solve(vents: [Vent], filterDiagonals: Bool) throws -> Int {
     let ventMapWidth = 1000
     let ventMapHeight = 1000
 
@@ -43,12 +64,17 @@ func part1(vents: [Vent]) throws -> Int {
         ),
         count: ventMapHeight
     )
-    
-    // Filter out diagonal vents
-    let nonDiagonalVents = vents.filter {
-        $0.start.x == $0.end.x || $0.start.y == $0.end.y
+
+    let ventsToDraw: [Vent]
+    if filterDiagonals {
+        ventsToDraw = vents.filter {
+            $0.start.x == $0.end.x || $0.start.y == $0.end.y
+        }
+    } else {
+        ventsToDraw = vents
     }
-    for vent in nonDiagonalVents {
+
+    for vent in ventsToDraw {
         try draw(vent, on: &ventMap)
     }
     
@@ -74,6 +100,7 @@ enum Script {
                 end: Point(x: Int($0.end[0])!, y: Int($0.end[1])!)
             )}
 
-        print("Part 1: ", try part1(vents: vents))
+        print("Part 1: ", try solve(vents: vents, filterDiagonals: true))
+        print("Part 2: ", try solve(vents: vents, filterDiagonals: false))
     }
 }
