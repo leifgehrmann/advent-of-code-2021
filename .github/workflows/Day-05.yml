@@ -1,4 +1,4 @@
-name: Day-05-
+name: Day-05-Hydrothermal-Venture
 
 on:
   workflow_dispatch:
