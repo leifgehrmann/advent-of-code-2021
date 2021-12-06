@@ -37,6 +37,7 @@
 		B660E29B275C0A79003F5072 /* InputReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E283275C09FC003F5072 /* InputReader.swift */; };
 		B660E29C275C0A79003F5072 /* InputReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E283275C09FC003F5072 /* InputReader.swift */; };
 		B660E29F275C0EA8003F5072 /* Day-05-Hydrothermal-Venture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E29E275C0EA8003F5072 /* Day-05-Hydrothermal-Venture.swift */; };
+		B660E2A2275CC632003F5072 /* Day-06-Lanternfish.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E2A1275CC632003F5072 /* Day-06-Lanternfish.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -288,6 +289,9 @@
 		B660E29D275C0EA8003F5072 /* Day-05-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-05-Input.txt"; sourceTree = "<group>"; };
 		B660E29E275C0EA8003F5072 /* Day-05-Hydrothermal-Venture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-05-Hydrothermal-Venture.swift"; sourceTree = "<group>"; };
 		B660E2A0275C0EC7003F5072 /* Day-05.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-05.yml"; path = ".github/workflows/Day-05.yml"; sourceTree = "<group>"; };
+		B660E2A1275CC632003F5072 /* Day-06-Lanternfish.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-06-Lanternfish.swift"; sourceTree = "<group>"; };
+		B660E2A3275CC63C003F5072 /* Day-06-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-06-Input.txt"; sourceTree = "<group>"; };
+		B660E2A4275CC64E003F5072 /* Day-06.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-06.yml"; path = ".github/workflows/Day-06.yml"; sourceTree = "<group>"; };
 		B697BC08274EDBA80052399C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B697BC0C274EE5CC0052399C /* Day-01.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "Day-01.yml"; path = ".github/workflows/Day-01.yml"; sourceTree = "<group>"; };
 		B6B3EFF4275BEDBA00ACCF8E /* Day-05 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-05"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -543,6 +547,7 @@
 				B637EE512759EBB100B1F5CE /* Day-03.yml */,
 				B637EE5E275AB53300B1F5CE /* Day-04.yml */,
 				B660E2A0275C0EC7003F5072 /* Day-05.yml */,
+				B660E2A4275CC64E003F5072 /* Day-06.yml */,
 			);
 			name = "GitHub Workflows";
 			sourceTree = "<group>";
@@ -561,6 +566,8 @@
 				B637EE5D275AB50A00B1F5CE /* Day-04-Input.txt */,
 				B660E29E275C0EA8003F5072 /* Day-05-Hydrothermal-Venture.swift */,
 				B660E29D275C0EA8003F5072 /* Day-05-Input.txt */,
+				B660E2A1275CC632003F5072 /* Day-06-Lanternfish.swift */,
+				B660E2A3275CC63C003F5072 /* Day-06-Input.txt */,
 			);
 			name = Scripts;
 			sourceTree = "<group>";
@@ -1099,6 +1106,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B660E2A2275CC632003F5072 /* Day-06-Lanternfish.swift in Sources */,
 				B660E289275C0A6F003F5072 /* InputReader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
