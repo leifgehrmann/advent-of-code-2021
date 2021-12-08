@@ -11,6 +11,7 @@ My attempts at the [Advent of Code 2021](https://adventofcode.com/2021) challeng
 * [![Day-05-Hydrothermal-Venture](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-05.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-05.yml?query=branch%3Amain)
 * [![Day-06-Lanternfish](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-06.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-06.yml?query=branch%3Amain)
 * [![Day-07-The-Treachery-of-Whales](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-07.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-07.yml?query=branch%3Amain)
+* [![Day-08-Seven-Segment-Search](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-08.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-08.yml?query=branch%3Amain)
 
 ## Attribution
 
