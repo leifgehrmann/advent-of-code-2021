@@ -37,61 +37,49 @@ func part1(entries: [Entry]) -> Int {
 }
 
 func intersectSignals(_ a: String, _ b: String) -> String {
-    let segments = "abcdefg"
+    /// Returns the intersecting segments for a signal.
+    /// For example, the intersection of `acg` and `abcg`, the return will be `cg`.
     var intersectedSignal = ""
-    for segment in segments {
-        if a.contains(segment) && b.contains(segment) {
-            intersectedSignal.append(segment)
+    for aElement in a {
+        if b.contains(aElement) {
+            intersectedSignal.append(aElement)
         }
     }
     return intersectedSignal
 }
 
-func subtract(_ a: String, from b: String) -> String {
-    let segments = "abcdefg"
-    var signalDifference = ""
-    for segment in segments {
-        if (b.contains(segment) && !a.contains(segment)) {
-            signalDifference.append(segment)
-        }
-    }
-    return signalDifference
+func deduceThree(_ one: String, _ signals235: [String]) -> String {
+    /// Intersection of 1 and 2 should result in 1 segments.
+    /// Intersection of 1 and 3 should result in 2 segments.
+    /// Intersection of 1 and 5 should result in 1 segments.
+    if intersectSignals(one, signals235[0]).count == 2 { return signals235[0] }
+    if intersectSignals(one, signals235[1]).count == 2 { return signals235[1] }
+    return signals235[2]
 }
 
-func deduceThree(_ signals234: [String]) -> String {
-    // Intersections of 2, 3, 5 can be used to deduce which
-    // signal represents 3. Because only the intersection of
-    // 2 and 5 result in an intersection of 3.
-    let i1 = intersectSignals(signals234[0], signals234[1])
-    let i2 = intersectSignals(signals234[0], signals234[2])
-    if i1.count == 3 { return signals234[2] }
-    if i2.count == 3 { return signals234[1] }
-    return signals234[0]
-}
-
-func deduceTwoAndFive(_ three: String, _ four: String, _ signals25: [String]) -> (String, String) {
-    // Intersection of 3 and 4 should result in a single segment b.
-    // That can be used to deduce numbers 2 and 5.
-    let difference = subtract(three, from: four)
-    if (difference.count != 1) {
-        print(three, four)
-        print(difference)
-        return ("ERROR", "ERROR")
+func deduceTwoAndFive(_ four: String, _ signals25: [String]) -> (String, String) {
+    /// Intersection 4 and 2 should result in 2 segments.
+    /// Intersection 4 and 5 should result in 3 segments.
+    if intersectSignals(four, signals25[0]).count == 2 {
+        return (signals25[0], signals25[1])
     }
-    if signals25[0].contains(difference) {
-        return (signals25[1], signals25[0])
-    }
-    return (signals25[0], signals25[1])
+    return (signals25[1], signals25[0])
 }
 
 func deduceSix(_ seven: String, _ signals069: [String]) -> String {
-    if (subtract(seven, from: signals069[0]).count == 4) { return signals069[0] }
-    if (subtract(seven, from: signals069[1]).count == 4) { return signals069[1] }
+    /// Intersection of 7 and 0 should result in 3 segments.
+    /// Intersection of 7 and 9 should result in 3 segments.
+    /// Intersection of 7 and 6 should result in 2 segments.
+    /// Therefore we can deduce 6 because of the unique number of intersections.
+    if (intersectSignals(seven, signals069[0]).count == 2) { return signals069[0] }
+    if (intersectSignals(seven, signals069[1]).count == 2) { return signals069[1] }
     return signals069[2]
 }
 
 func deduceZeroAndNine(_ three: String, _ signals09: [String]) -> (String, String) {
-    if (subtract(three, from: signals09[0]).count == 2) {
+    /// Intersection of 3 and 0 should result in 2 segments.
+    /// Intersection of 3 and 9 should result in 1 segments.
+    if (intersectSignals(three, signals09[0]).count == 4) {
         return (signals09[0], signals09[1])
     }
     return (signals09[1], signals09[0])
@@ -106,9 +94,9 @@ func deduceSignals(_ signals: [String]) -> [String] {
     let signals235 = signals.filter { $0.count == 5 }
     let signals069 = signals.filter { $0.count == 6 }
     
-    let three = deduceThree(signals235)
+    let three = deduceThree(one, signals235)
     let signals25 = signals235.filter { $0 != three }
-    let (two, five) = deduceTwoAndFive(three, four, signals25)
+    let (two, five) = deduceTwoAndFive(four, signals25)
     
     let six = deduceSix(seven, signals069)
     let signals09 = signals069.filter { $0 != six }
