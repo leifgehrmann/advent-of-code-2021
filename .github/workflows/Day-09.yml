@@ -1,0 +1,20 @@
+name: Day-09-Smoke-Basin
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**Day-09**'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: fwal/setup-swift@d43a564349d1341cd990cfbd70d94d63b8899475
+        with:
+            swift-version: "5"
+      - uses: actions/checkout@v2
+      - name: Run script
+        run: |
+          xcrun --sdk macosx swiftc -parse-as-library Day-09*.swift InputReader.swift -o ./Day-09
+          ./Day-09
