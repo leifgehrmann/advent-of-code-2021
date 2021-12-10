@@ -13,6 +13,7 @@ My attempts at the [Advent of Code 2021](https://adventofcode.com/2021) challeng
 * [![Day-07-The-Treachery-of-Whales](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-07.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-07.yml?query=branch%3Amain)
 * [![Day-08-Seven-Segment-Search](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-08.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-08.yml?query=branch%3Amain)
 * [![Day-09-Smoke-Basin](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-09.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-09.yml?query=branch%3Amain)
+* [![Day-10-Syntax-Scoring](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-10.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-10.yml?query=branch%3Amain)
 
 ## Attribution
 
