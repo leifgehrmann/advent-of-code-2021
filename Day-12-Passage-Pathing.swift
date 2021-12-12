@@ -1,7 +1,7 @@
 import Foundation
 
 /// Define the graph system based on Strings, Tuples, and Arrays.
-/// Wouldn't really recommend this in production environments, but it seemed convinient here!
+/// Wouldn't really recommend this in production environments, but it seemed convenient here!
 typealias Node = String
 typealias Edge = (Node, Node)
 typealias Path = [Node]
@@ -16,15 +16,15 @@ extension Node {
     }
     
     /// Returns `true` if the node can be visited for a given path.
-    func hasVisitedTooManyTimes(
-        in path: Path,
+    func canBeVisited(
+        from path: Path,
         maxVisitsToSmallCaves: Int
     ) -> Bool {
         /// The `start` and `end` caves cannot be visited more than once.
         if self == "start" || self == "end" {
             return path.contains(self)
         }
-        /// Small caves can be visited only a certain number of times, so it if appears
+        /// Small caves can be visited only a certain number of times, so if if appears
         /// in the path more than the `maxVisits`, we cannot visit it.
         if isSmallCave() {
             return path.filter {$0 == self}.count >= maxVisitsToSmallCaves
@@ -43,8 +43,8 @@ extension Path {
         return newPath
     }
     
-    /// Returns `true` if a small cave has appeared more than once in the path.
-    func hasVisitedSmallCavesMoreThanOnce() -> Bool {
+    /// Returns `true` if a small cave appears more than once in the path.
+    func hasVisitedASmallCaveMoreThanOnce() -> Bool {
         let smallCavesInPath = self.filter { $0.isSmallCave() }
         let smallCavesInPathSet = Set(smallCavesInPath)
         return smallCavesInPathSet.count != smallCavesInPath.count
@@ -64,38 +64,29 @@ extension Path {
         
         /// Depending on the puzzle part, we want to control how many times a
         /// certain node can be visited.
-        /// * For Part 1, small caves could only be visited once.
-        /// * For Part 2, small caves could be visited more than once, but only
-        ///   if another small cave hasn't been visited more than once.
+        /// * For Part 1, small caves can only be visited once.
+        /// * For Part 2, small caves can be visited twice, but only if another
+        ///   small cave hasn't been visited more than once.
         let maxVisitsToSmallCaves: Int
         switch hasVisitConstraint {
         case .CannotVisitSmallCavesMoreThanOnce:
             maxVisitsToSmallCaves = 1
             break
         case .CanVisitOneSmallCaveMoreThanOnce:
-            maxVisitsToSmallCaves = hasVisitedSmallCavesMoreThanOnce() ? 1 : 2
+            maxVisitsToSmallCaves = hasVisitedASmallCaveMoreThanOnce() ? 1 : 2
             break
         }
         
         /// Iterate all the edges, looking for the next potential nodes.
         for edge in edges {
-            /// Handle `[0]` to `[1]`.
-            if currentNode == edge.0 {
-                if !edge.1.hasVisitedTooManyTimes(
-                    in: self,
-                    maxVisitsToSmallCaves: maxVisitsToSmallCaves
-                ) {
-                    potentialNodes.append(edge.1)
-                }
+            if currentNode != edge.0 {
+                continue
             }
-            /// Handle `[1]` to `[0]`.
-            if currentNode == edge.1 {
-                if !edge.0.hasVisitedTooManyTimes(
-                    in: self,
-                    maxVisitsToSmallCaves: maxVisitsToSmallCaves
-                ) {
-                    potentialNodes.append(edge.0)
-                }
+            if !edge.1.canBeVisited(
+                from: self,
+                maxVisitsToSmallCaves: maxVisitsToSmallCaves
+            ) {
+                potentialNodes.append(edge.1)
             }
         }
         
@@ -144,11 +135,14 @@ enum Script {
     static func main() throws {
         let input = try readFileInCwd(file: "/Day-12-Input.txt")
         
+        /// Generate the list of edges. To avoid duplicate code, we also duplicate
+        /// the edges so the graph is bidirectional.
         let edges = input
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .split(separator: "\n")
             .map {$0.components(separatedBy: "-")}
-            .map {Edge($0[0], $0[1])}
+            .map {[Edge($0[0], $0[1]), Edge($0[1], $0[0])]}
+            .flatMap({$0})
 
         let pathsToEndForPart1 = generateAllPathsToEnd(
             from: ["start"],
