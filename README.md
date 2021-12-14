@@ -17,6 +17,7 @@ My attempts at the [Advent of Code 2021](https://adventofcode.com/2021) challeng
 * [![Day-11-Dumbo-Octopus](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-11.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-11.yml?query=branch%3Amain)
 * [![Day-12-Passage-Pathing](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-12.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-12.yml?query=branch%3Amain)
 * [![Day-13-Transparent-Origami](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-13.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-13.yml?query=branch%3Amain)
+* [![Day-14-Extended-Polymerization](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-14.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-14.yml?query=branch%3Amain)
 
 ## Attribution
 
