@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B637EE4F2759E05C00B1F5CE /* Day-03-Binary-Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B637EE4E2759E05C00B1F5CE /* Day-03-Binary-Diagnostic.swift */; };
 		B637EE5C275AB4FB00B1F5CE /* Day-04-Giant-Squid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B637EE5B275AB4FB00B1F5CE /* Day-04-Giant-Squid.swift */; };
+		B6578378276A796F009D34F0 /* Day-16-Packet-Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6578377276A796F009D34F0 /* Day-16-Packet-Decoder.swift */; };
 		B65C97E6274ED7AB00BEA5CC /* Day-01-Sonar-Sweep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C97DA274ED2AE00BEA5CC /* Day-01-Sonar-Sweep.swift */; };
 		B65C97EC274ED9F500BEA5CC /* Day-02-Dive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65C97E7274ED9ED00BEA5CC /* Day-02-Dive.swift */; };
 		B660E284275C09FC003F5072 /* InputReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E283275C09FC003F5072 /* InputReader.swift */; };
@@ -290,6 +291,9 @@
 		B637EE5B275AB4FB00B1F5CE /* Day-04-Giant-Squid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-04-Giant-Squid.swift"; sourceTree = "<group>"; };
 		B637EE5D275AB50A00B1F5CE /* Day-04-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-04-Input.txt"; sourceTree = "<group>"; };
 		B637EE5E275AB53300B1F5CE /* Day-04.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-04.yml"; path = ".github/workflows/Day-04.yml"; sourceTree = "<group>"; };
+		B6578376276A7959009D34F0 /* Day-16.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-16.yml"; path = ".github/workflows/Day-16.yml"; sourceTree = "<group>"; };
+		B6578377276A796F009D34F0 /* Day-16-Packet-Decoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-16-Packet-Decoder.swift"; sourceTree = "<group>"; };
+		B6578379276A797B009D34F0 /* Day-16-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-16-Input.txt"; sourceTree = "<group>"; };
 		B65C97DA274ED2AE00BEA5CC /* Day-01-Sonar-Sweep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day-01-Sonar-Sweep.swift"; sourceTree = "<group>"; };
 		B65C97DF274ED4CA00BEA5CC /* Day-01 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-01"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B65C97E7274ED9ED00BEA5CC /* Day-02-Dive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-02-Dive.swift"; sourceTree = "<group>"; };
@@ -593,6 +597,7 @@
 				B660E2C0276655AA003F5072 /* Day-13.yml */,
 				B660E2C427680076003F5072 /* Day-14.yml */,
 				B660E2C82768EF31003F5072 /* Day-15.yml */,
+				B6578376276A7959009D34F0 /* Day-16.yml */,
 			);
 			name = "GitHub Workflows";
 			sourceTree = "<group>";
@@ -631,6 +636,8 @@
 				B660E2C32768006A003F5072 /* Day-14-Input.txt */,
 				B660E2C52768EF19003F5072 /* Day-15-Chiton.swift */,
 				B660E2C72768EF24003F5072 /* Day-15-Input.txt */,
+				B6578377276A796F009D34F0 /* Day-16-Packet-Decoder.swift */,
+				B6578379276A797B009D34F0 /* Day-16-Input.txt */,
 			);
 			name = Scripts;
 			sourceTree = "<group>";
@@ -1260,6 +1267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B660E293275C0A73003F5072 /* InputReader.swift in Sources */,
+				B6578378276A796F009D34F0 /* Day-16-Packet-Decoder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
