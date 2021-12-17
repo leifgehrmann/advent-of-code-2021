@@ -12,26 +12,6 @@ struct Target {
             position.y > maxY || position.y < minY
         )
     }
-    
-    func closestX(to position: Position) -> Int? {
-        if position.x > maxX {
-            return maxX
-        }
-        if position.x < minX {
-            return minX
-        }
-        return nil
-    }
-    
-    func furthestX(to position: Position) -> Int? {
-        if position.x > maxX {
-            return minX
-        }
-        if position.x < minX {
-            return maxX
-        }
-        return nil
-    }
 }
 
 struct Position {
@@ -40,8 +20,8 @@ struct Position {
 }
 
 struct Velocity {
-    let x: Int;
-    let y: Int;
+    let dx: Int;
+    let dy: Int;
 }
 
 func parseTarget(input: String) -> Target {
@@ -55,10 +35,69 @@ func parseTarget(input: String) -> Target {
         .split(separator: "=")[1].components(separatedBy: "..")
         .map {Int($0)}.compactMap {$0}
     return Target(
-        minX: rangeX[0],
-        maxX: rangeX[1],
-        minY: rangeY[0],
-        maxY: rangeY[1]
+        minX: min(rangeX[0], rangeX[1]),
+        maxX: max(rangeX[0], rangeX[1]),
+        minY: min(rangeY[0], rangeY[1]),
+        maxY: max(rangeY[0], rangeY[1])
+    )
+}
+
+/// Returns the minimum velocity to reach `xPosition`. This takes drag
+/// into account.
+func getMinimumXVelocityToHitViaDrag(xPosition: Int) -> Int {
+    /// For each step the drag will subtract `1` from the velocity. This means
+    /// a velocity of `4` will travel `4 + 3 + 2 + 1 = 10` in 4 steps. We
+    /// want a function that does the inverse of this calculation, where
+    /// `f(10) = 4`. Thankfully the OEIS has us covered:
+    /// https://oeis.org/A002024
+    let scalar = Int(floor(sqrt(Float(2 * abs(xPosition))) + 1/2))
+    /// The above function doesn't take direction into account, so we need to
+    /// apply the direction to scalar to derive the velocity.
+    let direction = xPosition >= 0 ? 1 : -1
+    return scalar * direction
+}
+
+/// Returns the maximum velocity to yeet it to the `xPosition`.
+func getMaximumXVelocityToHitDirectly(xPosition: Int) -> Int {
+    return xPosition
+}
+
+/// Returns the minimum velocity to reach `yPosition`. This takes gravity
+/// into account.
+func getMinimumYVelocityToHitViaGravity(yPosition: Int) -> Int {
+    if (yPosition > 0) {
+        /// It just to happens that the function to calculate this is the
+        /// same as the function that we use to calculate drag, because
+        /// drag has the same dx as gravity.
+        return getMinimumXVelocityToHitViaDrag(xPosition: yPosition)
+    } else {
+        /// Otherwise, if the yPosition is below the start position, we can
+        /// just yeet it downwards at the same velocity as the `yPosition`.
+        return yPosition
+    }
+}
+
+/// Returns the maximum velocity to reach `yPosition`.
+func getMaximumYVelocityToHitViaGravity(target: Target) -> Int {
+    return max(
+        /// Because gravity is 1 for each step, when the probe is fired
+        /// upwards it will always return to the start position with the
+        /// same velocity but inverted.
+        abs(target.minY),
+        abs(target.maxY),
+        /// Special case where if the probe reaches the start position
+        /// but is still within the target, because the target could have
+        /// a `maxY: 50` and `minY: -49`. So actually the real maximum
+        /// velocity should be `99`!
+        abs(target.maxY - target.minY)
+    )
+}
+
+/// Returns the minimum and maximum values for a list of numbers.
+func minMax(_ values: Int...) -> (min: Int?, max: Int?) {
+    return (
+        min: values.min(),
+        max: values.max()
     )
 }
 
@@ -67,22 +106,25 @@ func simulateShot(
     velocity: Velocity,
     target: Target
 ) -> (hit: Bool, maxY: Int) {
-    let velocityXDirection = velocity.x >= 0 ? 1 : -1
+    let velocityXDirection = velocity.dx >= 0 ? 1 : -1
     var newVelocity = velocity
     var newPosition = start
     var maxY = start.y
     var hit = false
+
     while (true) {
+        /// Derive the new target.
         newPosition = Position(
-            x: newPosition.x + newVelocity.x,
-            y: newPosition.y + newVelocity.y
+            x: newPosition.x + newVelocity.dx,
+            y: newPosition.y + newVelocity.dy
         )
 
+        /// Record whether we hit a maxY.
         if maxY < newPosition.y {
             maxY = newPosition.y
         }
         
-        /// Check if it has hit the target
+        /// Check if it has hit the target.
         if (target.containsPosition(newPosition)) {
             hit = true
             break
@@ -93,9 +135,10 @@ func simulateShot(
             break
         }
         
+        /// Apply drag and gravity to the velocity.
         newVelocity = Velocity(
-            x: max(0, abs(newVelocity.x) - 1) * velocityXDirection,
-            y: newVelocity.y - 1
+            dx: max(0, abs(newVelocity.dx) - 1) * velocityXDirection,
+            dy: newVelocity.dy - 1
         )
     }
     return (
@@ -111,42 +154,33 @@ enum Script {
         let target = parseTarget(input: input)
         let startPosition = Position(x: 0, y: 0)
         
-        /// To make the
+        /// Calculate the upper and lower bounds of what the X velocities will
+        /// be. Since the target could be behind the `startPosition`, we
+        /// want to handle negative velocities as well.
+        let (minXVelocity, maxXVelocity) = minMax(
+            getMinimumXVelocityToHitViaDrag(xPosition: target.minX),
+            getMinimumXVelocityToHitViaDrag(xPosition: target.maxX),
+            getMaximumXVelocityToHitDirectly(xPosition: target.minX),
+            getMaximumXVelocityToHitDirectly(xPosition: target.maxX)
+        )
         
-        /// Make a  educated guess of what the upper and lower bounds of the
-        /// problem will be.
-        let closestXToStart = target.closestX(to: startPosition)!
-        let direction = closestXToStart > startPosition.x ? 1 : -1
+        /// We know the minimum y velocity because we can fire directly
+        /// towards the target. This is the furthest y position of the box
+        /// from the start position.
+        let minYVelocity = getMinimumYVelocityToHitViaGravity(yPosition: target.minY)
+        /// Because the position is not interpolated, we know the highest
+        /// velocity is equal to the max step that can be taken.
+        let maxYVelocity = getMaximumYVelocityToHitViaGravity(target: target)
         
-        /// Because drag will reduce the x-velocity to `0` in after
-        /// `velocity.x`'s steps, we know that the lowest velocity
-        /// (not accounting for the direction) will
-        /// https://oeis.org/A002024
-        let closestXDistance = abs(closestXToStart - startPosition.x)
-        let lowestXVelocity = Int(floor(sqrt(Float(2 * closestXDistance)) + 1/2))
-        /// Because the position is not interpolated, the highest velocity
-        /// (not accounting for the direction) will be the furthest x position
-        /// of the box.
-        let highestXVelocity = abs(target.furthestX(to: startPosition)!)
-        /// Accounting for the direction, we therefore know the lower and
-        /// upper bounds of the x velocity.
-        let minXVelocity = min(lowestXVelocity * direction, highestXVelocity * direction)
-        let maxXVelocity = max(lowestXVelocity * direction, highestXVelocity * direction)
-        
-        /// We also know the minimum y velocity because we can fire downwards.
-        /// This is the furthest y position of the box.
-        let minYVelocity = target.minY
-        /// Because the position is not interpolated, we also know
-        /// the highest velocity, assuming the target is below
-        /// the starting position.
-        let maxYVelocity = abs(target.minY)
-        
-        var maxY: Int? = nil
+        var maxY: Int = startPosition.y
         var hitVelocities: [Velocity] = []
         
+        /// Simulate the shorts for all velocities we know have a chance of
+        /// hitting the target. If it hits, keep track of the velocities that
+        /// hit the target and record the maxY.
         for vY in minYVelocity...maxYVelocity {
-            for vX in minXVelocity...maxXVelocity {
-                let velocity = Velocity(x: vX, y: vY)
+            for vX in minXVelocity!...maxXVelocity! {
+                let velocity = Velocity(dx: vX, dy: vY)
                 let (hit, simMaxY) = simulateShot(
                     start: startPosition,
                     velocity: velocity,
@@ -154,15 +188,14 @@ enum Script {
                 )
                 if hit {
                     hitVelocities.append(velocity)
-                }
-                if hit && simMaxY > maxY ?? (simMaxY - 1) {
-                    maxY = simMaxY
+                    if simMaxY > maxY {
+                        maxY = simMaxY
+                    }
                 }
             }
         }
         
-        print(maxY)
-        print(hitVelocities.count)
-        
+        print("Part 1: ", maxY)
+        print("Part 2: ", hitVelocities.count)
     }
 }
