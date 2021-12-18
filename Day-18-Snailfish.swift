@@ -5,17 +5,17 @@ enum Branch {
     case Right
 }
 
-protocol PairElement {
+protocol Element {
     func magnitude() -> Int
     func isPair() -> Bool
     func isReduced() -> Bool
     func isReduced(depth: Int) -> Bool
     func wantsToExplode(depth: Int) -> Bool
     func wantsToSplit() -> Bool
-    func reduceLoop()
+    func toString() -> String
 }
 
-extension Int: PairElement {
+extension Int: Element {
     func magnitude() -> Int {
         return self
     }
@@ -34,14 +34,16 @@ extension Int: PairElement {
     func wantsToSplit() -> Bool {
         return !self.isReduced()
     }
-    func reduceLoop() {}
+    func toString() -> String {
+        return String(self)
+    }
 }
 
-class Pair: PairElement {
-    var left: PairElement;
-    var right: PairElement;
+class Pair: Element {
+    var left: Element;
+    var right: Element;
     
-    init (left: PairElement, right: PairElement) {
+    init (left: Element, right: Element) {
         self.left = left
         self.right = right
     }
@@ -76,44 +78,47 @@ class Pair: PairElement {
         if depth >= 4 {
             return true
         }
-        return left.wantsToExplode(depth: depth + 1) || right.wantsToExplode(depth: depth + 1)
+        return (
+            left.wantsToExplode(depth: depth + 1) ||
+            right.wantsToExplode(depth: depth + 1)
+        )
     }
     
-    func setPairElement(at path: [Branch], to pairElement: PairElement) {
+    func setElement(at path: [Branch], to element: Element) {
         var newPath = path
         let lastPathBranch = newPath.removeFirst()
         if newPath.count == 0 {
             if lastPathBranch == .Left {
-                left = pairElement
+                left = element
             } else {
-                right = pairElement
+                right = element
             }
         } else {
             if lastPathBranch == .Left {
-                (left as! Pair).setPairElement(at: newPath, to: pairElement)
+                (left as! Pair).setElement(at: newPath, to: element)
             } else {
-                (right as! Pair).setPairElement(at: newPath, to: pairElement)
+                (right as! Pair).setElement(at: newPath, to: element)
             }
         }
     }
     
-    func findLeftMostPairToExplode(depth: Int) -> (pair: Pair, path: [Branch]) {
+    private func findLeftMostPairToExplode(
+        depth: Int
+    ) -> (pair: Pair, path: [Branch]) {
         var path: [Branch] = []
         var pairToExplode = self
-        if left.wantsToExplode(depth: depth + 1) {
+        if left.isPair() && left.wantsToExplode(depth: depth + 1) {
             path.append(.Left)
-            if left.isPair() {
-                let (leftPairToExplode, pathToLeftPairToExplode) = (left as! Pair).findLeftMostPairToExplode(depth: depth + 1)
-                pairToExplode = leftPairToExplode
-                path.append(contentsOf: pathToLeftPairToExplode)
-            }
-        } else if right.wantsToExplode(depth: depth + 1) {
+            let (leftMostPairToExplode, pathToLeftMostPairToExplode) =
+            (left as! Pair).findLeftMostPairToExplode(depth: depth + 1)
+            pairToExplode = leftMostPairToExplode
+            path.append(contentsOf: pathToLeftMostPairToExplode)
+        } else if right.isPair() && right.wantsToExplode(depth: depth + 1) {
             path.append(.Right)
-            if right.isPair() {
-                let (rightPairToExplode, pathToRightPairToExplode) = (right as! Pair).findLeftMostPairToExplode(depth: depth + 1)
-                pairToExplode = rightPairToExplode
-                path.append(contentsOf: pathToRightPairToExplode)
-            }
+            let (leftMostPairToExplode, pathToLeftMostPairToExplode) =
+            (right as! Pair).findLeftMostPairToExplode(depth: depth + 1)
+            pairToExplode = leftMostPairToExplode
+            path.append(contentsOf: pathToLeftMostPairToExplode)
         }
         return (
             pair: pairToExplode,
@@ -121,38 +126,49 @@ class Pair: PairElement {
         )
     }
     
-    func findLeftMostPairElementToSplit() -> (pairElement: Int, path: [Branch]) {
+    private func findLeftMostNumberToSplit() -> (number: Int, path: [Branch]) {
         var path: [Branch] = []
-        var pairElementToSplit = 0
+        var numberToSplit = 0
         if left.wantsToSplit() {
             path.append(.Left)
             if left.isPair() {
-                let (leftPairElementToSplit, pathToLeftPairElementToSplit) = (left as! Pair).findLeftMostPairElementToSplit()
-                pairElementToSplit = leftPairElementToSplit
-                path.append(contentsOf: pathToLeftPairElementToSplit)
+                let (leftMostElementToSplit, pathToLeftMostNumberToSplit) =
+                    (left as! Pair).findLeftMostNumberToSplit()
+                numberToSplit = leftMostElementToSplit
+                path.append(contentsOf: pathToLeftMostNumberToSplit)
             } else {
-                pairElementToSplit = left as! Int
+                numberToSplit = left as! Int
             }
         } else if right.wantsToSplit() {
             path.append(.Right)
             if right.isPair() {
-                let (leftPairElementToSplit, pathToLeftPairElementToSplit) = (right as! Pair).findLeftMostPairElementToSplit()
-                pairElementToSplit = leftPairElementToSplit
-                path.append(contentsOf: pathToLeftPairElementToSplit)
+                let (leftMostNumberToSplit, pathToLeftMostNumberToSplit) =
+                    (right as! Pair).findLeftMostNumberToSplit()
+                numberToSplit = leftMostNumberToSplit
+                path.append(contentsOf: pathToLeftMostNumberToSplit)
             } else {
-                pairElementToSplit = right as! Int
+                numberToSplit = right as! Int
             }
         }
         return (
-            pairElement: pairElementToSplit,
+            number: numberToSplit,
             path: path
         )
     }
     
-    func findLeftNeighborOfPairPath(path: [Branch]) -> (pair: Pair, branch: Branch)? {
-        // If we have a sequence 001100100, we start from the end,
-        // and iterate backwards until we reach a 1. When there is a one, we
-        // then try to find the right most pair from 0011000.
+    private func findLeftNeighborOfPairPath(
+        path: [Branch]
+    ) -> (pair: Pair, branch: Branch)? {
+        /// Iterate through the path, from the end, looking first for a pair
+        /// where the branch we were in was `Right`. Then we descend the `left`
+        /// branch, looking for all the right-most elements.
+        /// For example: In `LLRRLLRLL`, we "go up" the path to the pair
+        /// `LLRRLL`, and then descend the `Left` branch for that pair, finding
+        /// the right-most elements for that path. So it could look like:
+        /// `LLRRLLLRRR`.
+        /// If we go all the way up the tree that means there isn't a neighbor
+        /// to the left of this path, so we return `nil`.
+        /// For example: A path of `LLLLLLL` returns nil.
         var newPath = path
         while (true) {
             if newPath.count == 0 {
@@ -173,10 +189,19 @@ class Pair: PairElement {
         }
     }
     
-    func findRightNeighborOfPairPath(path: [Branch]) -> (pair: Pair, branch: Branch)? {
-        // If we have a sequence 001100100, we start from the end,
-        // and iterate backwards until we reach a 1. When there is a one, we
-        // then try to find the right most pair from 0011000.
+    private func findRightNeighborOfPairPath(
+        path: [Branch]
+    ) -> (pair: Pair, branch: Branch)? {
+        /// Iterate through the path, from the end, looking first for a pair
+        /// where the branch we were in was `Left`. Then we descend the `Right`
+        /// branch, looking for all the left-most elements.
+        /// For example: In `LLRRLLRL`, we "go up" the path to the pair
+        /// `LLRRLLRL`, and then descend the `Right` branch for that pair, finding
+        /// the right-most elements for that path. So it could look like:
+        /// `LLRRLLRLLLL`.
+        /// If we go all the way up the tree that means there isn't a neighbor
+        /// to the left of this path, so we return `nil`.
+        /// For example: A path of `RRRRRRR` returns nil.
         var newPath = path
         while (true) {
             if newPath.count == 0 {
@@ -225,58 +250,75 @@ class Pair: PairElement {
     }
     
     func reduce() {
-        /// Prioritize explosions
+        /// Explode pairs that are deeper than 4 layers.
         if self.wantsToExplode(depth: 0) {
-            let (pairToExplode, pathToPairToExplode) = self.findLeftMostPairToExplode(depth: 0)
-            if var (leftNeighbor, leftNeighborBranch) = self.findLeftNeighborOfPairPath(path: pathToPairToExplode) {
+            let (pairToExplode, pathToPairToExplode) =
+                self.findLeftMostPairToExplode(depth: 0)
+            if let (leftNeighbor, leftNeighborBranch) =
+                self.findLeftNeighborOfPairPath(path: pathToPairToExplode) {
                 if leftNeighborBranch == .Left {
-                    print("ghuyhu")
-                    leftNeighbor.left = leftNeighbor.left.magnitude() + pairToExplode.left.magnitude()
+                    leftNeighbor.left = (
+                        leftNeighbor.left.magnitude() +
+                        pairToExplode.left.magnitude()
+                    )
                 } else {
-                    print("wat")
-                    leftNeighbor.right = leftNeighbor.right.magnitude() + pairToExplode.left.magnitude()
+                    leftNeighbor.right = (
+                        leftNeighbor.right.magnitude() +
+                        pairToExplode.left.magnitude()
+                    )
                 }
             }
-            if var (rightNeighbor, rightNeighborBranch) = self.findRightNeighborOfPairPath(path: pathToPairToExplode) {
+            if let (rightNeighbor, rightNeighborBranch) =
+                self.findRightNeighborOfPairPath(path: pathToPairToExplode) {
                 if rightNeighborBranch == .Left {
-                    print("hmm")
-                    rightNeighbor.left = rightNeighbor.left.magnitude() + pairToExplode.right.magnitude()
+                    rightNeighbor.left = (
+                        rightNeighbor.left.magnitude() +
+                        pairToExplode.right.magnitude()
+                    )
                 } else {
-                    print("hagh", rightNeighbor.right)
-                    rightNeighbor.right = rightNeighbor.right.magnitude() + pairToExplode.right.magnitude()
+                    rightNeighbor.right = (
+                        rightNeighbor.right.magnitude() +
+                        pairToExplode.right.magnitude()
+                    )
                 }
             }
-            setPairElement(at: pathToPairToExplode, to: 0)
+            setElement(at: pathToPairToExplode, to: 0)
             return
         }
-        /// Now lets split big numbers
+
+        /// Split numbers larger than 9.
         if self.wantsToSplit() {
-            let (pairElementToSplit, pathToPairElementToSplit) = self.findLeftMostPairElementToSplit()
+            let (elementToSplit, pathToElementToSplit) =
+                self.findLeftMostNumberToSplit()
             let newPair = Pair(
-                left: Int(floor(Float(pairElementToSplit) / 2.0)),
-                right: Int(ceil(Float(pairElementToSplit) / 2.0))
+                /// Regular number divided by two, rounded down.
+                left: Int(floor(Float(elementToSplit) / 2.0)),
+                /// Regular number divided by two, rounded up.
+                right: Int(ceil(Float(elementToSplit) / 2.0))
             )
-            printSnailNumber(newPair)
-            setPairElement(at: pathToPairElementToSplit, to: newPair)
+            setElement(at: pathToElementToSplit, to: newPair)
             return
         }
     }
     
-    func reduceLoop() {
+    func add(_ rightPair: Pair) {
+        let leftPair = Pair(
+            left: left,
+            right: right
+        )
+        left = leftPair
+        right = rightPair
         while !self.isReduced() {
             self.reduce()
         }
     }
     
-    static func + (left: Pair, right: Pair) -> Pair {
-        return Pair(
-            left: left,
-            right: right
-        )
+    func toString() -> String {
+        return "[" + left.toString() + "," + right.toString() + "]"
     }
 }
 
-func parseSnailNumberAsPairElement(_ input: String) -> PairElement {
+func parseSnailNumberAsElement(_ input: String) -> Element {
     var depth = 0
     var commaIndex: Int? = nil
     for (index, ch) in input.enumerated() {
@@ -294,71 +336,52 @@ func parseSnailNumberAsPairElement(_ input: String) -> PairElement {
             break
         }
     }
-    let leftRangeStart = input.index(input.startIndex, offsetBy: 1)
-    let leftRangeEnd = input.index(input.startIndex, offsetBy: commaIndex! - 1)
-    let rightRangeStart = input.index(input.startIndex, offsetBy: commaIndex! + 1)
-    let rightRangeEnd = input.index(input.endIndex, offsetBy: -2)
-    let leftRange = leftRangeStart...leftRangeEnd
-    let rightRange = rightRangeStart...rightRangeEnd
+    let leftStart = input.index(input.startIndex, offsetBy: 1)
+    let leftEnd = input.index(input.startIndex, offsetBy: commaIndex! - 1)
+    let leftRange = leftStart...leftEnd
+
+    let rightStart = input.index(input.startIndex, offsetBy: commaIndex! + 1)
+    let rightEnd = input.index(input.endIndex, offsetBy: -2)
+    let rightRange = rightStart...rightEnd
+    
     return Pair(
-        left: parseSnailNumberAsPairElement(String(input[leftRange])),
-        right: parseSnailNumberAsPairElement(String(input[rightRange]))
+        left: parseSnailNumberAsElement(String(input[leftRange])),
+        right: parseSnailNumberAsElement(String(input[rightRange]))
     )
-}
-
-func toString(_ pairElement: PairElement) -> String {
-    if pairElement.isPair() {
-        let pair = pairElement as! Pair
-        return "[" + toString(pair.left) + "," + toString(pair.right) + "]"
-    }
-    return String(pairElement.magnitude())
-}
-
-func printSnailNumber(_ pairElement: PairElement) {
-    print(toString(pairElement))
 }
 
 @main
 enum Script {
     static func main() throws {
-        let input = try readFileInCwd(file: "/Day-18-Input.txt")
+        let snailNumberStrings = try readFileInCwd(file: "/Day-18-Input.txt")
             .trimmingCharacters(in: .whitespacesAndNewlines)
-        var lastSnailNumber: PairElement? = nil
-        for snailNumberString in input.split(separator: "\n") {
-            print(snailNumberString)
-            let snailNumber = parseSnailNumberAsPairElement(String(snailNumberString))
-            if lastSnailNumber == nil {
-                lastSnailNumber = snailNumber
+            .split(separator: "\n")
+            .map { String($0) }
+        
+        var snailNumberSum: Pair? = nil
+        for snailNumberString in snailNumberStrings {
+            let snailNumber = parseSnailNumberAsElement(
+                snailNumberString
+            ) as! Pair
+            if snailNumberSum == nil {
+                snailNumberSum = snailNumber
             } else {
-                lastSnailNumber = (lastSnailNumber as! Pair) + (snailNumber as! Pair)
+                snailNumberSum?.add(snailNumber)
             }
-            (lastSnailNumber as! Pair).reduceLoop()
-            printSnailNumber(lastSnailNumber as! PairElement)
-            print("----")
         }
-        print(lastSnailNumber?.magnitude())
+        print("Part 1: ", snailNumberSum!.magnitude())
         
         var magnitudes: [Int] = []
-        for (ai, a) in input.split(separator: "\n").enumerated() {
-            for (bi, b) in input.split(separator: "\n").enumerated() {
-                let aNumber = parseSnailNumberAsPairElement(String(a))
-                let bNumber = parseSnailNumberAsPairElement(String(b))
-                
-                if ai == bi {
-                    continue
-                }
-                
-                let cNumber = (aNumber as! Pair) + (bNumber as! Pair)
-                cNumber.reduceLoop()
-                
-                printSnailNumber(aNumber)
-                printSnailNumber(bNumber)
-                printSnailNumber(cNumber)
-                print("-----")
-                magnitudes.append(cNumber.magnitude())
+        for aStr in snailNumberStrings {
+            for bStr in snailNumberStrings {
+                let leftSnailNumber = parseSnailNumberAsElement(aStr) as! Pair
+                let rightSnailNumber = parseSnailNumberAsElement(bStr) as! Pair
+
+                leftSnailNumber.add(rightSnailNumber)
+                magnitudes.append(leftSnailNumber.magnitude())
             }
         }
         
-        print(magnitudes.max())
+        print("Part 2: ", magnitudes.max()!)
     }
 }
