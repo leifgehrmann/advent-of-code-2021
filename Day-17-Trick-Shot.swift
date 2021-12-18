@@ -84,12 +84,7 @@ func getMaximumYVelocityToHitViaGravity(target: Target) -> Int {
         /// upwards it will always return to the start position with the
         /// same velocity but inverted.
         abs(target.minY),
-        abs(target.maxY),
-        /// Special case where if the probe reaches the start position
-        /// but is still within the target, because the target could have
-        /// a `maxY: 50` and `minY: -49`. So actually the real maximum
-        /// velocity should be `99`!
-        abs(target.maxY - target.minY)
+        abs(target.maxY)
     )
 }
 
@@ -152,6 +147,15 @@ enum Script {
     static func main() throws {
         let input = try readFileInCwd(file: "/Day-17-Input.txt")
         let target = parseTarget(input: input)
+        
+        /// If the target cross the 0 y-position, there are infinitely many
+        /// solutions because the probe will always reach the 0 position
+        /// due to gravity being 1.
+        if (target.minX <= 0 && target.maxX >= 0) {
+            print("Part 1: Infinity")
+            print("Part 2: Infinite")
+        }
+        
         let startPosition = Position(x: 0, y: 0)
         
         /// Calculate the upper and lower bounds of what the X velocities will
