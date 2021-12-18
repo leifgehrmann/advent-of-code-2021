@@ -21,6 +21,7 @@ My attempts at the [Advent of Code 2021](https://adventofcode.com/2021) challeng
 * [![Day-15-Chiton](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-15.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-15.yml?query=branch%3Amain)
 * [![Day-16-Packet-Decoder](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-16.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-16.yml?query=branch%3Amain)
 * [![Day-17-Trick-Shot](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-17.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-17.yml?query=branch%3Amain)
+* [![Day-18-Snailfish](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-18.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-18.yml?query=branch%3Amain)
 
 ## Attribution
 
