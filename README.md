@@ -22,7 +22,9 @@ My attempts at the [Advent of Code 2021](https://adventofcode.com/2021) challeng
 * [![Day-16-Packet-Decoder](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-16.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-16.yml?query=branch%3Amain)
 * [![Day-17-Trick-Shot](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-17.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-17.yml?query=branch%3Amain)
 * [![Day-18-Snailfish](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-18.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-18.yml?query=branch%3Amain)
-* [![Day-19-Beacon-Scanner](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-19.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-19.yml?query=branch%3Amain)
+* [![Day-19-Beacon-Scanner](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-19.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-19.yml?query=branch%3Amain) †
+
+† _A solution was found, but only by iteratively solving the puzzle piece-wise and inserting the results back into the code, therefore hard-coding the solution. It also performs sub-optimally, taking several hours to execute._ 
 
 ## Attribution
 
