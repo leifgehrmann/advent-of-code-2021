@@ -50,6 +50,7 @@
 		B660E2BE27665561003F5072 /* Day-13-Transparent-Origami.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E2BD27665561003F5072 /* Day-13-Transparent-Origami.swift */; };
 		B660E2C22768005D003F5072 /* Day-14-Extended-Polymerization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E2C12768005D003F5072 /* Day-14-Extended-Polymerization.swift */; };
 		B660E2C62768EF19003F5072 /* Day-15-Chiton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E2C52768EF19003F5072 /* Day-15-Chiton.swift */; };
+		B6641446276E3665006A6951 /* Day-19-Beacon-Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6641445276E3665006A6951 /* Day-19-Beacon-Scanner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -340,6 +341,9 @@
 		B660E2C52768EF19003F5072 /* Day-15-Chiton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-15-Chiton.swift"; sourceTree = "<group>"; };
 		B660E2C72768EF24003F5072 /* Day-15-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-15-Input.txt"; sourceTree = "<group>"; };
 		B660E2C82768EF31003F5072 /* Day-15.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-15.yml"; path = ".github/workflows/Day-15.yml"; sourceTree = "<group>"; };
+		B6641445276E3665006A6951 /* Day-19-Beacon-Scanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-19-Beacon-Scanner.swift"; sourceTree = "<group>"; };
+		B6641447276E366B006A6951 /* Day-19-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-19-Input.txt"; sourceTree = "<group>"; };
+		B6641448276E3672006A6951 /* Day-19.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-19.yml"; path = ".github/workflows/Day-19.yml"; sourceTree = "<group>"; };
 		B697BC08274EDBA80052399C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B697BC0C274EE5CC0052399C /* Day-01.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "Day-01.yml"; path = ".github/workflows/Day-01.yml"; sourceTree = "<group>"; };
 		B6B3EFF4275BEDBA00ACCF8E /* Day-05 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-05"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -608,6 +612,7 @@
 				B6578376276A7959009D34F0 /* Day-16.yml */,
 				B657837D276BDCB0009D34F0 /* Day-17.yml */,
 				B6578381276D40D0009D34F0 /* Day-18.yml */,
+				B6641448276E3672006A6951 /* Day-19.yml */,
 			);
 			name = "GitHub Workflows";
 			sourceTree = "<group>";
@@ -652,6 +657,8 @@
 				B657837C276BDCA6009D34F0 /* Day-17-Input.txt */,
 				B657837E276D4023009D34F0 /* Day-18-Snailfish.swift */,
 				B6578380276D40C9009D34F0 /* Day-18-Input.txt */,
+				B6641445276E3665006A6951 /* Day-19-Beacon-Scanner.swift */,
+				B6641447276E366B006A6951 /* Day-19-Input.txt */,
 			);
 			name = Scripts;
 			sourceTree = "<group>";
@@ -1091,7 +1098,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1310;
+				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					B65C97DE274ED4CA00BEA5CC = {
 						CreatedOnToolsVersion = 13.1;
@@ -1307,6 +1314,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6641446276E3665006A6951 /* Day-19-Beacon-Scanner.swift in Sources */,
 				B660E296275C0A76003F5072 /* InputReader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1365,12 +1373,66 @@
 		B61BCB1B274ED23300D87BA0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};
 		B61BCB1C274ED23300D87BA0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 			};
 			name = Release;
 		};
