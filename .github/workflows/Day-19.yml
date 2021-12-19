@@ -1,0 +1,20 @@
+name: Day-19-Beacon-Scanner
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**Day-19**'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: fwal/setup-swift@v1
+        with:
+            swift-version: "5"
+      - uses: actions/checkout@v2
+      - name: Run script
+        run: |
+          xcrun --sdk macosx swiftc -parse-as-library Day-19*.swift InputReader.swift -o ./Day-19
+          ./Day-19
