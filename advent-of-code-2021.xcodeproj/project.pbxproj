@@ -51,6 +51,7 @@
 		B660E2C22768005D003F5072 /* Day-14-Extended-Polymerization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E2C12768005D003F5072 /* Day-14-Extended-Polymerization.swift */; };
 		B660E2C62768EF19003F5072 /* Day-15-Chiton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E2C52768EF19003F5072 /* Day-15-Chiton.swift */; };
 		B6641446276E3665006A6951 /* Day-19-Beacon-Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6641445276E3665006A6951 /* Day-19-Beacon-Scanner.swift */; };
+		B664144A276FC10E006A6951 /* Day-20-Trench-Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6641449276FC10E006A6951 /* Day-20-Trench-Map.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -344,6 +345,9 @@
 		B6641445276E3665006A6951 /* Day-19-Beacon-Scanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-19-Beacon-Scanner.swift"; sourceTree = "<group>"; };
 		B6641447276E366B006A6951 /* Day-19-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-19-Input.txt"; sourceTree = "<group>"; };
 		B6641448276E3672006A6951 /* Day-19.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-19.yml"; path = ".github/workflows/Day-19.yml"; sourceTree = "<group>"; };
+		B6641449276FC10E006A6951 /* Day-20-Trench-Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-20-Trench-Map.swift"; sourceTree = "<group>"; };
+		B664144B276FC116006A6951 /* Day-20-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-20-Input.txt"; sourceTree = "<group>"; };
+		B664144C276FC11B006A6951 /* Day-20.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-20.yml"; path = ".github/workflows/Day-20.yml"; sourceTree = "<group>"; };
 		B697BC08274EDBA80052399C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B697BC0C274EE5CC0052399C /* Day-01.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "Day-01.yml"; path = ".github/workflows/Day-01.yml"; sourceTree = "<group>"; };
 		B6B3EFF4275BEDBA00ACCF8E /* Day-05 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-05"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -613,6 +617,7 @@
 				B657837D276BDCB0009D34F0 /* Day-17.yml */,
 				B6578381276D40D0009D34F0 /* Day-18.yml */,
 				B6641448276E3672006A6951 /* Day-19.yml */,
+				B664144C276FC11B006A6951 /* Day-20.yml */,
 			);
 			name = "GitHub Workflows";
 			sourceTree = "<group>";
@@ -659,6 +664,8 @@
 				B6578380276D40C9009D34F0 /* Day-18-Input.txt */,
 				B6641445276E3665006A6951 /* Day-19-Beacon-Scanner.swift */,
 				B6641447276E366B006A6951 /* Day-19-Input.txt */,
+				B6641449276FC10E006A6951 /* Day-20-Trench-Map.swift */,
+				B664144B276FC116006A6951 /* Day-20-Input.txt */,
 			);
 			name = Scripts;
 			sourceTree = "<group>";
@@ -1323,6 +1330,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B664144A276FC10E006A6951 /* Day-20-Trench-Map.swift in Sources */,
 				B660E297275C0A77003F5072 /* InputReader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
