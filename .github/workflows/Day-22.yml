@@ -1,0 +1,20 @@
+name: Day-22-
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**Day-22**'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: fwal/setup-swift@v1
+        with:
+            swift-version: "5"
+      - uses: actions/checkout@v2
+      - name: Run script
+        run: |
+          xcrun --sdk macosx swiftc -parse-as-library Day-22*.swift InputReader.swift -o ./Day-22
+          ./Day-22
