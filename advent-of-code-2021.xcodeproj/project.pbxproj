@@ -52,6 +52,7 @@
 		B660E2C62768EF19003F5072 /* Day-15-Chiton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B660E2C52768EF19003F5072 /* Day-15-Chiton.swift */; };
 		B6641446276E3665006A6951 /* Day-19-Beacon-Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6641445276E3665006A6951 /* Day-19-Beacon-Scanner.swift */; };
 		B664144A276FC10E006A6951 /* Day-20-Trench-Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6641449276FC10E006A6951 /* Day-20-Trench-Map.swift */; };
+		B664144F27708B1C006A6951 /* Day-21-Dirac-Dice.swift in Sources */ = {isa = PBXBuildFile; fileRef = B664144E27708B1C006A6951 /* Day-21-Dirac-Dice.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -348,6 +349,9 @@
 		B6641449276FC10E006A6951 /* Day-20-Trench-Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-20-Trench-Map.swift"; sourceTree = "<group>"; };
 		B664144B276FC116006A6951 /* Day-20-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-20-Input.txt"; sourceTree = "<group>"; };
 		B664144C276FC11B006A6951 /* Day-20.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-20.yml"; path = ".github/workflows/Day-20.yml"; sourceTree = "<group>"; };
+		B664144D27708B12006A6951 /* Day-21-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-21-Input.txt"; sourceTree = "<group>"; };
+		B664144E27708B1C006A6951 /* Day-21-Dirac-Dice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-21-Dirac-Dice.swift"; sourceTree = "<group>"; };
+		B664145027708B25006A6951 /* Day-21.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-21.yml"; path = ".github/workflows/Day-21.yml"; sourceTree = "<group>"; };
 		B697BC08274EDBA80052399C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B697BC0C274EE5CC0052399C /* Day-01.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "Day-01.yml"; path = ".github/workflows/Day-01.yml"; sourceTree = "<group>"; };
 		B6B3EFF4275BEDBA00ACCF8E /* Day-05 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day-05"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -618,6 +622,7 @@
 				B6578381276D40D0009D34F0 /* Day-18.yml */,
 				B6641448276E3672006A6951 /* Day-19.yml */,
 				B664144C276FC11B006A6951 /* Day-20.yml */,
+				B664145027708B25006A6951 /* Day-21.yml */,
 			);
 			name = "GitHub Workflows";
 			sourceTree = "<group>";
@@ -666,6 +671,8 @@
 				B6641447276E366B006A6951 /* Day-19-Input.txt */,
 				B6641449276FC10E006A6951 /* Day-20-Trench-Map.swift */,
 				B664144B276FC116006A6951 /* Day-20-Input.txt */,
+				B664144E27708B1C006A6951 /* Day-21-Dirac-Dice.swift */,
+				B664144D27708B12006A6951 /* Day-21-Input.txt */,
 			);
 			name = Scripts;
 			sourceTree = "<group>";
@@ -1340,6 +1347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B660E298275C0A77003F5072 /* InputReader.swift in Sources */,
+				B664144F27708B1C006A6951 /* Day-21-Dirac-Dice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

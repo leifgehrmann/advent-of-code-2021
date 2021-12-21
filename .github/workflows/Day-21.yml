@@ -1,0 +1,20 @@
+name: Day-21-Dirac-Dice
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**Day-21**'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: fwal/setup-swift@v1
+        with:
+            swift-version: "5"
+      - uses: actions/checkout@v2
+      - name: Run script
+        run: |
+          xcrun --sdk macosx swiftc -parse-as-library Day-21*.swift InputReader.swift -o ./Day-21
+          ./Day-21
