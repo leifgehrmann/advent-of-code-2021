@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		34565C5527720E2C00C2FFD0 /* Day-22-.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34565C5427720E2800C2FFD0 /* Day-22-.swift */; };
+		34565C5527720E2C00C2FFD0 /* Day-22-Reactor-Reboot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34565C5427720E2800C2FFD0 /* Day-22-Reactor-Reboot.swift */; };
 		B637EE4F2759E05C00B1F5CE /* Day-03-Binary-Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B637EE4E2759E05C00B1F5CE /* Day-03-Binary-Diagnostic.swift */; };
 		B637EE5C275AB4FB00B1F5CE /* Day-04-Giant-Squid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B637EE5B275AB4FB00B1F5CE /* Day-04-Giant-Squid.swift */; };
 		B6578378276A796F009D34F0 /* Day-16-Packet-Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6578377276A796F009D34F0 /* Day-16-Packet-Decoder.swift */; };
@@ -285,7 +285,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		34565C5427720E2800C2FFD0 /* Day-22-.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day-22-.swift"; sourceTree = "<group>"; };
+		34565C5427720E2800C2FFD0 /* Day-22-Reactor-Reboot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Day-22-Reactor-Reboot.swift"; sourceTree = "<group>"; };
 		34565C5627720E3A00C2FFD0 /* Day-22-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-22-Input.txt"; sourceTree = "<group>"; };
 		34565C5727720E4D00C2FFD0 /* Day-22.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-22.yml"; path = ".github/workflows/Day-22.yml"; sourceTree = "<group>"; };
 		B637EE41274EE69200B1F5CE /* Day-02.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "Day-02.yml"; path = ".github/workflows/Day-02.yml"; sourceTree = "<group>"; };
@@ -678,7 +678,7 @@
 				B664144B276FC116006A6951 /* Day-20-Input.txt */,
 				B664144E27708B1C006A6951 /* Day-21-Dirac-Dice.swift */,
 				B664144D27708B12006A6951 /* Day-21-Input.txt */,
-				34565C5427720E2800C2FFD0 /* Day-22-.swift */,
+				34565C5427720E2800C2FFD0 /* Day-22-Reactor-Reboot.swift */,
 				34565C5627720E3A00C2FFD0 /* Day-22-Input.txt */,
 			);
 			name = Scripts;
@@ -1362,7 +1362,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34565C5527720E2C00C2FFD0 /* Day-22-.swift in Sources */,
+				34565C5527720E2C00C2FFD0 /* Day-22-Reactor-Reboot.swift in Sources */,
 				B660E299275C0A78003F5072 /* InputReader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

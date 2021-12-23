@@ -1,4 +1,4 @@
-name: Day-22-
+name: Day-22-Reactor-Reboot
 
 on:
   workflow_dispatch:
