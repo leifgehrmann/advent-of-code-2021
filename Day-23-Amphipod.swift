@@ -9,6 +9,24 @@ enum AmphipodType: String, Hashable {
 
 struct Amphipod: Hashable {
     let type: AmphipodType
+    
+    func movementCost(steps: Int) -> Int {
+        switch (type) {
+        case .A: return 1 * steps
+        case .B: return 10 * steps
+        case .C: return 100 * steps
+        case .D: return 1000 * steps
+        }
+    }
+    
+    func expectedXPosition() -> Int {
+        switch (type) {
+        case .A: return 3
+        case .B: return 5
+        case .C: return 7
+        case .D: return 9
+        }
+    }
 }
 
 struct Room: Hashable {
@@ -30,6 +48,18 @@ struct Room: Hashable {
 struct Map {
     let rooms: [Room]
     let roomNeighbors: [Room: [(neighbor: Room, steps: Int)]]
+    let distanceMatrix: [Room: [(destination: Room, steps: Int)]]
+
+    func closestSideRoom(
+        for amphipod: Amphipod,
+        from room: Room
+    ) -> (sideRoom: Room, steps: Int) {
+        let result = distanceMatrix[room]!
+            .filter { $0.destination.position.x == amphipod.expectedXPosition() }
+            .sorted { $0.steps < $1.steps }
+            .first!
+        return (sideRoom: result.destination, steps: result.steps)
+    }
 }
 
 struct State: Hashable {
@@ -92,15 +122,6 @@ func printMap(_ map: Map, with state: State) {
     )
 }
 
-func moveCost(amphipod: Amphipod, steps: Int) -> Int {
-    switch (amphipod.type) {
-    case .A: return 1 * steps
-    case .B: return 10 * steps
-    case .C: return 100 * steps
-    case .D: return 1000 * steps
-    }
-}
-
 /// Amphipods will never move from the hallway into a room unless that room
 /// is their destination room and that room contains no amphipods which do not
 /// also have that room as their own destination. If an amphipod's starting
@@ -125,12 +146,8 @@ func movementAllowed(for amphipod: Amphipod, from: Room, to: Room) -> Bool {
     }
     /// Amphipods can enter side room that is their destination, and that
     /// they can only move downwards.
-    return from.position.y < to.position.y && (
-        (amphipod.type == .A && to.position.x == 3) ||
-        (amphipod.type == .B && to.position.x == 5) ||
-        (amphipod.type == .C && to.position.x == 7) ||
-        (amphipod.type == .D && to.position.x == 9)
-    )
+    return from.position.y < to.position.y &&
+        to.position.x == amphipod.expectedXPosition()
 }
 
 func moveAmphipods(
@@ -162,8 +179,7 @@ func moveAmphipods(
             newOccupancies.removeValue(forKey: room)
             newOccupancies[roomNeighbor.neighbor] = amphipod
             let newState = State(occupancies: newOccupancies)
-            let newCost = initialCost + moveCost(
-                amphipod: amphipod,
+            let newCost = initialCost + amphipod.movementCost(
                 steps: roomNeighbor.steps
             )
 
@@ -185,93 +201,79 @@ func moveAmphipods(
     return newStatesWithCost
 }
 
-func isSideRoomSolved(
-    occupancies: [Amphipod],
-    expectedAmphipodType: AmphipodType
-) -> Bool {
-    return occupancies.filter({ $0.type == expectedAmphipodType }).count == 2
-}
-
 func isSolved(_ state: State) -> Bool {
-    let sideRoomPods = state.occupancies.filter { $0.key.position.y > 1 }
-    let podsInA = Array(sideRoomPods.filter({ $0.key.position.x == 3 }).values)
-    if !isSideRoomSolved(occupancies: podsInA, expectedAmphipodType: .A) {
-        return false
-    }
-    let podsInB = Array(sideRoomPods.filter({ $0.key.position.x == 5 }).values)
-    if !isSideRoomSolved(occupancies: podsInB, expectedAmphipodType: .B) {
-        return false
-    }
-    let podsInC = Array(sideRoomPods.filter({ $0.key.position.x == 7 }).values)
-    if !isSideRoomSolved(occupancies: podsInC, expectedAmphipodType: .C) {
-        return false
-    }
-    let podsInD = Array(sideRoomPods.filter({ $0.key.position.x == 9 }).values)
-    if !isSideRoomSolved(occupancies: podsInD, expectedAmphipodType: .D) {
-        return false
-    }
-    return true
+    let amphipodsInCorrectPosition = state.occupancies.filter { $0.key.position.x == $0.value.expectedXPosition() }.count
+    return amphipodsInCorrectPosition == state.occupancies.count
 }
 
-//func stateScore(state: State, cost: Cost) -> Int {
-//    let room1A: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 3 && $0.key.position.x == 2 }.values)
-//    let room2A: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 5 && $0.key.position.x == 2 }.values)
-//    let room3A: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 7 && $0.key.position.x == 2 }.values)
-//    let room4A: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 9 && $0.key.position.x == 2 }.values)
-//    let room1B: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 3 && $0.key.position.x == 3 }.values)
-//    let room2B: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 5 && $0.key.position.x == 3 }.values)
-//    let room3B: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 7 && $0.key.position.x == 3 }.values)
-//    let room4B: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 9 && $0.key.position.x == 3 }.values)
-//    let room1AScore: Int = room1A.reduce(0) { $0 + (($1.type == .A) ? 1 : -2) }
-//    let room2AScore: Int = room2A.reduce(0) { $0 + (($1.type == .B) ? 1 : -2) }
-//    let room3AScore: Int = room3A.reduce(0) { $0 + (($1.type == .C) ? 1 : -2) }
-//    let room4AScore: Int = room4A.reduce(0) { $0 + (($1.type == .D) ? 1 : -2) }
-//    let room1BScore: Int = room1B.reduce(0) { $0 + (($1.type == .A) ? 1 : -2) }
-//    let room2BScore: Int = room2B.reduce(0) { $0 + (($1.type == .B) ? 1 : -2) }
-//    let room3BScore: Int = room3B.reduce(0) { $0 + (($1.type == .C) ? 1 : -2) }
-//    let room4BScore: Int = room4B.reduce(0) { $0 + (($1.type == .D) ? 1 : -2) }
-//    let bottomPodsScore: Int = (
-//        room1BScore +
-//        room2BScore +
-//        room3BScore +
-//        room4BScore
-//    ) * 10 * 100 * 1000 * 10000
-//    let middlePodsScore: Int = (
-//        room1AScore +
-//        room2AScore +
-//        room3AScore +
-//        room4AScore
-//    ) * 10 * 100 * 1000
-//    let hallwayA: [Int] = state.occupancies.filter { $0.key.position.y == 1 && $0.value.type == .A }.keys.reduce(0) { $0 + abs(3 - $1.position) }
-//    let hallwayB: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 1 && $0.value.type == .A }.keys)
-//    let hallwayC: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 1 && $0.value.type == .A }.keys)
-//    let hallwayD: [Amphipod] = Array(state.occupancies.filter { $0.key.position.y == 1 && $0.value.type == .A }.keys)
-//
-//    return bottomPodsScore + middlePodsScore - hallway - cost
-//}
+func lowerBoundCost(state: State, map: Map) -> Int {
+    var score = 0
+    for (room, amphipod) in state.occupancies {
+        let distanceToSideRoom = map.closestSideRoom(for: amphipod, from: room).steps
+        score += amphipod.movementCost(steps: distanceToSideRoom)
+    }
+
+    return score
+}
+
+func stateScore(state: State, cost: Cost, map: Map) -> Int {
+    var score = 0
+    for (room, amphipod) in state.occupancies {
+        let distanceToSideRoom = map.closestSideRoom(for: amphipod, from: room).steps
+        score += distanceToSideRoom * distanceToSideRoom
+    }
+
+    return score
+}
 
 /// Returns the correct index in the `toProcess` array, sorted by the netRisk.
-//func binarySearchIndex(
-//    _ states: [State],
-//    _ stateCosts: [State: Int],
-//    _ newStateScore: Int
-//) -> Array.Index {
-//    var low = states.startIndex
-//    var high = states.endIndex
-//    while low != high {
-//        let mid = states.index(
-//            low,
-//            offsetBy: states.distance(from: low, to: high) / 2
-//        )
-//        let midStateCost = stateCosts[states[mid]]!
-//        if stateScore(state: states[mid], cost: midStateCost) < newStateScore {
-//            low = states.index(after: mid)
-//        } else {
-//            high = mid
-//        }
-//    }
-//    return low
-//}
+func binarySearchIndex<Element: Hashable>(
+    _ priorityQueue: [Element],
+    _ priorityValueLookup: [Element: Int],
+    _ newPriorityValue: Int
+) -> Array.Index {
+    var low = priorityQueue.startIndex
+    var high = priorityQueue.endIndex
+    while low != high {
+        let mid = priorityQueue.index(
+            low,
+            offsetBy: priorityQueue.distance(from: low, to: high) / 2
+        )
+        if priorityValueLookup[priorityQueue[mid]]! < newPriorityValue {
+            low = priorityQueue.index(after: mid)
+        } else {
+            high = mid
+        }
+    }
+    return low
+}
+
+func generateRoomDistances(
+    from: Room,
+    using roomNeighbors: [Room: [(neighbor: Room, steps: Int)]]
+) -> [(destination: Room, steps: Int)] {
+    var roomsToProcess: [Room] = [from]
+    var distanceToRoom: [Room: Int] = [from: 0]
+    var visitedRooms: [Room] = [from]
+    
+    while roomsToProcess.count > 0 {
+        let roomToProcess = roomsToProcess.removeFirst()
+        for (neighbor, steps) in roomNeighbors[roomToProcess]! {
+            if visitedRooms.contains(neighbor) {
+                continue
+            }
+            distanceToRoom[neighbor] = distanceToRoom[roomToProcess]! + steps
+            visitedRooms.append(neighbor)
+            roomsToProcess.append(neighbor)
+        }
+    }
+    
+    var distanceMatrixForRoom: [(destination: Room, steps: Int)] = []
+    for (room, steps) in distanceToRoom {
+        distanceMatrixForRoom.append((destination: room, steps: steps))
+    }
+    return distanceMatrixForRoom
+}
 
 func parseMapAndState(_ input: String) -> (
     map: Map,
@@ -391,10 +393,19 @@ func parseMapAndState(_ input: String) -> (
     roomNeighbors[roomS3B] = [(neighbor: roomS3A, steps: 1)]
     roomNeighbors[roomS4B] = [(neighbor: roomS4A, steps: 1)]
     
+    var distanceMatrix: [Room: [(destination: Room, steps: Int)]] = [:]
+    for room in rooms {
+        distanceMatrix[room] = generateRoomDistances(
+            from: room,
+            using: roomNeighbors
+        )
+    }
+    
     return (
         map: Map(
             rooms: rooms,
-            roomNeighbors: roomNeighbors
+            roomNeighbors: roomNeighbors,
+            distanceMatrix: distanceMatrix
         ),
         state: State(
             occupancies: occupancies
@@ -406,28 +417,30 @@ func findStateUntilSolved(initialState: State, with map: Map) -> Cost {
     var statesToProcess = [initialState]
     var statesToProcessIndexedByScore = [initialState]
     var visitedStatesWithCost: [State: Cost] = [:]
-    // var visitedStatesWithStepsToRech: [State: Int] = [:]
+    var visitedStatesWithScore: [State: Int] = [:]
     var minimumStateCost = Int.max
-    // var foundUpperBound = false
+    var foundUpperBound = false
     
     var iterations = 0
     while statesToProcess.count > 0 {
-        if statesToProcess.count % 100 == 0 {
-            print("States to process, visited", statesToProcess.count, visitedStatesWithCost.count)
-        }
 
         let stateToProcess: State
-        //if foundUpperBound {
+        if foundUpperBound {
             stateToProcess = statesToProcess.removeFirst()
-//        } else {
-//            stateToProcess = statesToProcessIndexedByScore.removeLast()
-//            statesToProcess.removeAll { $0 == stateToProcess }
-//            printMap(map, with: stateToProcess)
-//            print(stateScore(state: stateToProcess, cost: visitedStatesWithCost[stateToProcess] ?? 0))
-//        }
+            if visitedStatesWithCost[stateToProcess] == nil {
+                continue
+            }
+        } else {
+            stateToProcess = statesToProcessIndexedByScore.removeFirst()
+            statesToProcess.removeAll { $0 == stateToProcess }
+        }
         
         let stateCost = visitedStatesWithCost[stateToProcess] ?? 0
         iterations += 1
+        
+        if statesToProcess.count % 100 == 0 {
+            print("States to process, visited", statesToProcess.count, visitedStatesWithCost.count, stateCost, minimumStateCost)
+        }
         
         // print("step to reach", visitedStatesWithStepsToRech[stateToProcess] ?? 0)
         
@@ -442,28 +455,35 @@ func findStateUntilSolved(initialState: State, with map: Map) -> Cost {
         
         for (state, cost) in newStatesWithCost {
             
-//            if foundUpperBound && cost >= minimumStateCost {
-//                continue
-//            }
+            if foundUpperBound && cost >= minimumStateCost {
+                continue
+            }
+            
+            if foundUpperBound && (cost + lowerBoundCost(state: state, map: map)) >= minimumStateCost {
+                continue
+            }
             
             // print("after: ")
             // printMap(map, with: state)
             if isSolved(state) {
-                //printMap(map, with: state)
+                // printMap(map, with: state)
                 print("Found solution with cost: ", cost)
                 minimumStateCost = cost
                 
-//                if !foundUpperBound {
-//                    // Remove all states that have a cost over the minimum cost
-//                    for (visitedState, visitedCost) in visitedStatesWithCost {
-//                        if visitedCost > minimumStateCost {
-//                            statesToProcess.removeAll { $0 == visitedState }
-//                            visitedStatesWithCost.removeValue(forKey: visitedState)
-//                        }
-//                    }
-//                }
-//
-//                foundUpperBound = true
+                // Remove all states that have a cost over the minimum cost
+                var removedEntries = 0
+                for (visitedState, visitedCost) in visitedStatesWithCost {
+                    if (
+                        visitedCost >= minimumStateCost ||
+                        visitedCost + lowerBoundCost(state: visitedState, map: map) >= minimumStateCost
+                    ) {
+                        visitedStatesWithCost.removeValue(forKey: visitedState)
+                        removedEntries += 1
+                    }
+                }
+                print("Removed ", removedEntries, "entries after finding lower solution")
+
+                foundUpperBound = true
             }
             
             if visitedStatesWithCost[state, default: Int.max] <= cost {
@@ -472,11 +492,16 @@ func findStateUntilSolved(initialState: State, with map: Map) -> Cost {
 
             statesToProcess.append(state)
             visitedStatesWithCost[state] = cost
-//            if !foundUpperBound {
-//                let newScore = stateScore(state: state, cost: cost)
-//                let index = binarySearchIndex(statesToProcessIndexedByScore, visitedStatesWithCost, newScore)
-//                statesToProcessIndexedByScore.insert(state, at: index)
-//            }
+            if !foundUpperBound {
+                let newScore = stateScore(state: state, cost: cost, map: map)
+                let index = binarySearchIndex(
+                    statesToProcessIndexedByScore,
+                    visitedStatesWithScore,
+                    newScore
+                )
+                visitedStatesWithScore[state] = newScore
+                statesToProcessIndexedByScore.insert(state, at: index)
+            }
         }
     }
     
@@ -490,10 +515,14 @@ enum Script {
             .trimmingCharacters(in: .whitespacesAndNewlines)
         let (map, state) = parseMapAndState(input)
         
+        return
+        
         printMap(map, with: state)
-        // Because this script takes forever to run, I've added a return
-        // statement to prevent it running in Github action.
-        // Return
-        print(findStateUntilSolved(initialState: state, with: map))
+        
+        print("Part 1: ", findStateUntilSolved(initialState: state, with: map))
+        
+//        printMap(map, with: state)
+//
+//        print("Part 1: ", findStateUntilSolved(initialState: state, with: map))
     }
 }
