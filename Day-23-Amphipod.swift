@@ -50,6 +50,17 @@ struct Map {
     let roomNeighbors: [Room: [(neighbor: Room, steps: Int)]]
     let distanceMatrix: [Room: [(destination: Room, steps: Int)]]
 
+    func stepsToDeepestSideRoom(
+        for amphipod: Amphipod,
+        from: Room,
+        to: Room
+    ) -> (sideRoom: Room, steps: Int) {
+        let result = distanceMatrix[from]!
+            .filter { $0.destination == to }
+            .first!
+        return (sideRoom: result.destination, steps: result.steps)
+    }
+    
     func closestSideRoom(
         for amphipod: Amphipod,
         from room: Room
@@ -219,7 +230,14 @@ func lowerBoundCost(state: State, map: Map) -> Int {
 func stateScore(state: State, cost: Cost, map: Map) -> Int {
     var score = 0
     for (room, amphipod) in state.occupancies {
-        let distanceToSideRoom = map.closestSideRoom(for: amphipod, from: room).steps
+        let distanceToSideRoom = map.stepsToDeepestSideRoom(
+            for: amphipod,
+            from: room,
+            to: map.rooms
+                .filter { $0.position.x == amphipod.expectedXPosition() }
+                .sorted { $0.position.y > $1.position.y }
+                .first!
+        ).steps
         score += distanceToSideRoom * distanceToSideRoom
     }
 
@@ -275,7 +293,12 @@ func generateRoomDistances(
     return distanceMatrixForRoom
 }
 
-func parseMapAndState(_ input: String) -> (
+enum Puzzle {
+    case Part1
+    case Part2
+}
+
+func parseMapAndState(_ input: String, puzzle: Puzzle) -> (
     map: Map,
     state: State
 ) {
@@ -290,14 +313,22 @@ func parseMapAndState(_ input: String) -> (
     let roomH11 = Room(position: (x: 11, y: 1))
     let roomS1A = Room(position: (x: 3, y: 2))
     let roomS1B = Room(position: (x: 3, y: 3))
+    let roomS1C = Room(position: (x: 3, y: 4))
+    let roomS1D = Room(position: (x: 3, y: 5))
     let roomS2A = Room(position: (x: 5, y: 2))
     let roomS2B = Room(position: (x: 5, y: 3))
+    let roomS2C = Room(position: (x: 5, y: 4))
+    let roomS2D = Room(position: (x: 5, y: 5))
     let roomS3A = Room(position: (x: 7, y: 2))
     let roomS3B = Room(position: (x: 7, y: 3))
+    let roomS3C = Room(position: (x: 7, y: 4))
+    let roomS3D = Room(position: (x: 7, y: 5))
     let roomS4A = Room(position: (x: 9, y: 2))
     let roomS4B = Room(position: (x: 9, y: 3))
+    let roomS4C = Room(position: (x: 9, y: 4))
+    let roomS4D = Room(position: (x: 9, y: 5))
     
-    let rooms = [
+    var rooms = [
         roomH01,
         roomH02,
         roomH04,
@@ -315,10 +346,24 @@ func parseMapAndState(_ input: String) -> (
         roomS4B
     ]
     
+    if puzzle == .Part2 {
+        rooms.append(contentsOf: [
+            roomS1C,
+            roomS1D,
+            roomS2C,
+            roomS2D,
+            roomS3C,
+            roomS3D,
+            roomS4C,
+            roomS4D
+        ])
+    }
+    
     var occupancies: [Room: Amphipod] = [:]
     for (yIndex, line) in input.split(separator: "\n").enumerated() {
         for (xIndex, char) in line.enumerated() {
-            let room = Room(position: (x: xIndex, y: yIndex))
+            let yOffset = yIndex == 3 && puzzle == .Part2 ? 2 : 0
+            let room = Room(position: (x: xIndex, y: yIndex + yOffset))
             switch char {
             case "A": occupancies[room] = Amphipod(type: .A); break;
             case "B": occupancies[room] = Amphipod(type: .B); break;
@@ -327,6 +372,17 @@ func parseMapAndState(_ input: String) -> (
             default: break;
             }
         }
+    }
+    
+    if puzzle == .Part2 {
+        occupancies[roomS1B] = Amphipod(type: .D)
+        occupancies[roomS1C] = Amphipod(type: .D)
+        occupancies[roomS2B] = Amphipod(type: .C)
+        occupancies[roomS2C] = Amphipod(type: .B)
+        occupancies[roomS3B] = Amphipod(type: .B)
+        occupancies[roomS3C] = Amphipod(type: .A)
+        occupancies[roomS4B] = Amphipod(type: .A)
+        occupancies[roomS4C] = Amphipod(type: .C)
     }
     
     /// Amphipods will never stop on the space immediately outside any
@@ -388,10 +444,41 @@ func parseMapAndState(_ input: String) -> (
         (neighbor: roomH10, steps: 2),
         (neighbor: roomS4B, steps: 1)
     ]
-    roomNeighbors[roomS1B] = [(neighbor: roomS1A, steps: 1)]
-    roomNeighbors[roomS2B] = [(neighbor: roomS2A, steps: 1)]
-    roomNeighbors[roomS3B] = [(neighbor: roomS3A, steps: 1)]
-    roomNeighbors[roomS4B] = [(neighbor: roomS4A, steps: 1)]
+    if puzzle == .Part1 {
+        roomNeighbors[roomS1B] = [(neighbor: roomS1A, steps: 1)]
+        roomNeighbors[roomS2B] = [(neighbor: roomS2A, steps: 1)]
+        roomNeighbors[roomS3B] = [(neighbor: roomS3A, steps: 1)]
+        roomNeighbors[roomS4B] = [(neighbor: roomS4A, steps: 1)]
+    } else {
+        roomNeighbors[roomS1B] = [
+            (neighbor: roomS1A, steps: 1), (neighbor: roomS1C, steps: 1)
+        ]
+        roomNeighbors[roomS2B] = [
+            (neighbor: roomS2A, steps: 1), (neighbor: roomS2C, steps: 1)
+        ]
+        roomNeighbors[roomS3B] = [
+            (neighbor: roomS3A, steps: 1), (neighbor: roomS3C, steps: 1)
+        ]
+        roomNeighbors[roomS4B] = [
+            (neighbor: roomS4A, steps: 1), (neighbor: roomS4C, steps: 1)
+        ]
+        roomNeighbors[roomS1C] = [
+            (neighbor: roomS1B, steps: 1), (neighbor: roomS1D, steps: 1)
+        ]
+        roomNeighbors[roomS2C] = [
+            (neighbor: roomS2B, steps: 1), (neighbor: roomS2D, steps: 1)
+        ]
+        roomNeighbors[roomS3C] = [
+            (neighbor: roomS3B, steps: 1), (neighbor: roomS3D, steps: 1)
+        ]
+        roomNeighbors[roomS4C] = [
+            (neighbor: roomS4B, steps: 1), (neighbor: roomS4D, steps: 1)
+        ]
+        roomNeighbors[roomS1D] = [(neighbor: roomS1C, steps: 1)]
+        roomNeighbors[roomS2D] = [(neighbor: roomS2C, steps: 1)]
+        roomNeighbors[roomS3D] = [(neighbor: roomS3C, steps: 1)]
+        roomNeighbors[roomS4D] = [(neighbor: roomS4C, steps: 1)]
+    }
     
     var distanceMatrix: [Room: [(destination: Room, steps: Int)]] = [:]
     for room in rooms {
@@ -445,7 +532,10 @@ func findStateUntilSolved(initialState: State, with map: Map) -> Cost {
         // print("step to reach", visitedStatesWithStepsToRech[stateToProcess] ?? 0)
         
         // print("before: ")
-        // printMap(map, with: stateToProcess)
+        if statesToProcess.count % 100 == 0 {
+            // printMap(map, with: stateToProcess)
+            // print("score:", visitedStatesWithScore[stateToProcess, default: 0])
+        }
         let newStatesWithCost = moveAmphipods(
             from: stateToProcess,
             with: stateCost,
@@ -513,16 +603,17 @@ enum Script {
     static func main() throws {
         let input = try readFileInCwd(file: "/Day-23-Input.txt")
             .trimmingCharacters(in: .whitespacesAndNewlines)
-        let (map, state) = parseMapAndState(input)
-        
-        return
+        let (map, state) = parseMapAndState(input, puzzle: .Part1)
         
         printMap(map, with: state)
+        return
+        // print("Part 1: ", findStateUntilSolved(initialState: state, with: map))
         
-        print("Part 1: ", findStateUntilSolved(initialState: state, with: map))
-        
-//        printMap(map, with: state)
+//        let (map2, state2) = parseMapAndState(input, puzzle: .Part2)
+//        printMap(map2, with: state2)
 //
-//        print("Part 1: ", findStateUntilSolved(initialState: state, with: map))
+//        print("Part 2: ", findStateUntilSolved(initialState: state2, with: map2))
     }
 }
+
+//upper bound for part 2: 117596
