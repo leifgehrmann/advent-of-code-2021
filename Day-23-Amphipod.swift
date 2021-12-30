@@ -598,6 +598,69 @@ func findStateUntilSolved(initialState: State, with map: Map) -> Cost {
     return minimumStateCost
 }
 
+func calculateMinCost(
+    state: State,
+    stateCost: Cost,
+    map: Map,
+    costToCompleteState: inout [State: Cost],
+    costToVisitState: inout [State: Cost],
+    maxRecursions: Int
+) -> Cost? {
+    
+    print("number of states visited", costToVisitState.count, costToCompleteState.count)
+    
+    if isSolved(state) {
+        return 0
+    }
+    
+    if maxRecursions > 500 {
+        return nil
+    }
+    
+    if costToVisitState[state, default: Int.max] < stateCost {
+        return nil
+    }
+
+    if costToCompleteState[state] != nil {
+        return costToCompleteState[state]
+    }
+
+    var costsToCompleteState: [Cost] = []
+    
+    let newStatesWithCost = moveAmphipods(
+        from: state,
+        with: stateCost,
+        using: map,
+        skipping: costToVisitState
+    )
+    
+    for (newState, costToReachNewState) in newStatesWithCost {
+        costToVisitState[newState] = costToReachNewState
+        let minCostToCompleteNewState = calculateMinCost(
+            state: newState,
+            stateCost: costToReachNewState,
+            map: map,
+            costToCompleteState: &costToCompleteState,
+            costToVisitState: &costToVisitState,
+            maxRecursions: maxRecursions + 1
+        )
+        if minCostToCompleteNewState != nil {
+            costsToCompleteState.append(
+                costToReachNewState + minCostToCompleteNewState!
+            )
+        }
+    }
+
+    if costsToCompleteState.count > 0 {
+        let lowestCostToCompleteState = costsToCompleteState.min()
+        costToCompleteState[state] = lowestCostToCompleteState
+        return lowestCostToCompleteState
+    } else {
+        costToCompleteState.removeValue(forKey: state)
+        return nil
+    }
+}
+
 @main
 enum Script {
     static func main() throws {
@@ -606,8 +669,19 @@ enum Script {
         let (map, state) = parseMapAndState(input, puzzle: .Part1)
         
         printMap(map, with: state)
+        
         return
-        // print("Part 1: ", findStateUntilSolved(initialState: state, with: map))
+        
+//        var costToCompleteState: [State: Cost] = [:]
+//        var costToVisitState: [State: Cost] = [:]
+//        print("Part 1: ", calculateMinCost(
+//            state: state,
+//            stateCost: 0,
+//            map: map,
+//            costToCompleteState: &costToCompleteState,
+//            costToVisitState: &costToVisitState,
+//            maxRecursions: 0
+//        ))
         
 //        let (map2, state2) = parseMapAndState(input, puzzle: .Part2)
 //        printMap(map2, with: state2)
