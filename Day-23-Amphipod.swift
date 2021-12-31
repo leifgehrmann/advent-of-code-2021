@@ -12,7 +12,7 @@ enum Amphipod: String, Hashable {
     case C = "C"
     case D = "D"
     
-    var homeXPosition: Int {
+    var sideRoomPositionX: Int {
         switch (self) {
         case .A: return 3
         case .B: return 5
@@ -21,7 +21,7 @@ enum Amphipod: String, Hashable {
         }
     }
 
-    var moveCost: Int {
+    var movementCost: Int {
         switch (self) {
         case .A: return 1
         case .B: return 10
@@ -88,52 +88,12 @@ struct State: Hashable {
         distance += abs(from.x - to.x)
         /// Travel down.
         distance += to.y - hallwayY
-        return distance * amphipod.moveCost
-    }
-    
-    func accessibleSideRooms(
-        for amphipod: Amphipod,
-        from position: Position
-    ) -> [Position] {
-        /// Is the entrance to the side-room accessible?
-        var positionX = position.x + (position.x > amphipod.homeXPosition ? -1 : 1)
-        while positionX != amphipod.homeXPosition {
-            if amphipods[Position(x: positionX, y: hallwayY)] != nil {
-                return []
-            }
-            positionX += position.x > amphipod.homeXPosition ? -1 : 1
-        }
-        
-        /// Are all amphipods from bottom to top the correct type?
-        /// If not, there is really no point for the amphipod to travel
-        /// into it.
-        var positionY = sideRoomY
-        var accessibleRooms: [Position] = []
-        var lastAccessibleRoom: Position? = nil
-        while positionY <= sideRoomY + sideRoomDepths - 1 {
-            let sideRoom = Position(x: positionX, y: positionY)
-            positionY += 1
-            if amphipods[sideRoom] == nil {
-                lastAccessibleRoom = sideRoom
-                accessibleRooms.append(sideRoom)
-            } else if amphipods[sideRoom] != amphipod {
-                return accessibleRooms
-            }
-            if isSolved(for: amphipod, at: sideRoom) {
-                return lastAccessibleRoom != nil ? [lastAccessibleRoom!] : []
-            }
-        }
-        
-        if accessibleRooms.count == sideRoomDepths {
-            return [lastAccessibleRoom!]
-        } else {
-            return accessibleRooms
-        }
+        return distance * amphipod.movementCost
     }
     
     func isSolved() -> Bool {
         for (position, amphipod) in amphipods {
-            if amphipod.homeXPosition != position.x {
+            if amphipod.sideRoomPositionX != position.x {
                 return false
             }
         }
@@ -141,13 +101,11 @@ struct State: Hashable {
     }
     
     /// Determines whether or not the amphipod should move.
-    func isSolved(for amphipod: Amphipod, at position: Position) -> Bool {
-        if position.x != amphipod.homeXPosition {
-            return false
-        }
-        var positionY = position.y
-        while positionY < sideRoomDepths + sideRoomY {
-            if amphipods[Position(x: position.x, y: positionY)] != amphipod {
+    func isSolved(for amphipod: Amphipod) -> Bool {
+        var positionY = sideRoomY
+        while positionY != sideRoomY + sideRoomDepths {
+            let position = Position(x: amphipod.sideRoomPositionX, y: positionY)
+            if amphipods[position] != amphipod {
                 return false
             }
             positionY += 1
@@ -155,26 +113,24 @@ struct State: Hashable {
         return true
     }
 
-    func hallwayAccessible(from: Position) -> Bool {
-        var positionY = from.y - 1
-        while positionY >= hallwayY {
-            if amphipods[Position(x: from.x, y: positionY)] != nil {
+    func isHallwayAccessible(from position: Position) -> Bool {
+        var positionY = sideRoomY
+        while positionY < position.y {
+            if amphipods[Position(x: position.x, y: positionY)] != nil {
                 return false
             }
-            positionY -= 1
+            positionY += 1
         }
         return true
     }
     
-    func hallwayPositionsAccessible(from: Position) -> (positions: [Position], intersections: [Position]) {
+    func accessibleHallwayPositions(from: Position) -> [Position] {
         var positions: [Position] = []
-        var intersections: [Position] = []
         
         var leftPositionX = from.x - 1
         while leftPositionX >= hallwayMinX {
             let newPosition = Position(x: leftPositionX, y: hallwayY)
             if sideRoomXs.contains(leftPositionX) {
-                intersections.append(newPosition)
                 leftPositionX -= 1
                 continue
             }
@@ -189,7 +145,6 @@ struct State: Hashable {
         while rightPositionX <= hallwayMaxX {
             let newPosition = Position(x: rightPositionX, y: hallwayY)
             if sideRoomXs.contains(rightPositionX) {
-                intersections.append(newPosition)
                 rightPositionX += 1
                 continue
             }
@@ -199,7 +154,34 @@ struct State: Hashable {
             positions.append(newPosition)
             rightPositionX += 1
         }
-        return (positions: positions, intersections: positions)
+        return positions
+    }
+    
+    func accessibleSideRoom(for amphipod: Amphipod) -> Position? {
+        var positionY = sideRoomY + sideRoomDepths - 1
+        while positionY != hallwayY {
+            let position = Position(x: amphipod.sideRoomPositionX, y: positionY)
+            if amphipods[position] == nil {
+                return position
+            }
+            if amphipods[position] != amphipod {
+                return nil
+            }
+            positionY -= 1
+        }
+        return nil
+    }
+    
+    func hallwayFreeBetween(from: Int, to: Int) -> Bool {
+        let direction = from < to ? 1 : -1
+        var positionX = from + direction
+        while positionX != to {
+            if amphipods[Position(x: positionX, y: hallwayY)] != nil {
+                return false
+            }
+            positionX += direction
+        }
+        return true
     }
     
     func getProgressiveMovements(
@@ -208,62 +190,81 @@ struct State: Hashable {
     ) -> [Position] {
         /// Amphipods in the hallway can only go into side-rooms they belong to.
         if position.y == hallwayY {
-            return accessibleSideRooms(
-                for: amphipod,
-                from: position
-            )
+            guard let sideRoom = accessibleSideRoom(for: amphipod) else {
+                return []
+            }
+            if hallwayFreeBetween(from: position.x, to: sideRoom.x) {
+                return [sideRoom]
+            }
+            return []
         }
         if position.y > hallwayY {
-            /// Don't recommend moving if we are in the right spot!
-            if isSolved(for: amphipod, at: position) {
+            /// Don't recommend moving amphipods for rooms that are complete!
+            if isSolved(for: amphipod) {
                 return []
             }
             /// If we can't leave the side-room, there's not much we can do...
-            if !hallwayAccessible(from: position) {
+            if !isHallwayAccessible(from: position) {
                 return []
             }
             
-            var positions: [Position] = []
-            let (hallwayPositions, hallwayIntersections) =
-                hallwayPositionsAccessible(from: position)
-            positions.append(contentsOf: hallwayPositions)
-            
-            for hallwayIntersection in hallwayIntersections {
-                positions.append(contentsOf: accessibleSideRooms(
-                    for: amphipod,
-                    from: hallwayIntersection
-                ))
+            if position.x == amphipod.sideRoomPositionX {
+                var bottom = true
+                for positionY in position.y..<(sideRoomY + sideRoomDepths) {
+                    if amphipods[Position(x: position.x, y: positionY)] == nil {
+                        print("It's halwayts up its room?")
+                        exit(8)
+                    }
+                    if amphipods[Position(x: position.x, y: positionY)] != amphipod {
+                        bottom = false
+                    }
+                }
+                if bottom {
+                    return []
+                }
             }
             
-            return positions
+            if let sideRoom = accessibleSideRoom(for: amphipod) {
+                if hallwayFreeBetween(from: position.x, to: sideRoom.x) {
+                    return [sideRoom]
+                }
+            }
+
+            return accessibleHallwayPositions(from: position)
         }
         return []
     }
                                        
     func getProgressiveStates() -> [(newState: State, movementCost: Int)] {
-        var newStates: [(newState: State, movementCost: Int)] = []
+        var newMovements: [(from: Position, to: Position)] = []
         for (position, amphipod) in amphipods {
             for newPosition in getProgressiveMovements(
                 position: position,
                 amphipod: amphipod
             ) {
-                var newAmphipods = amphipods
-                newAmphipods.removeValue(forKey: position)
-                newAmphipods[newPosition] = amphipod
-                let newState = State(
-                    amphipods: newAmphipods,
-                    sideRoomDepths: sideRoomDepths
-                )
-                let movementCost = distance(
-                    for: amphipod,
-                    from: position,
-                    to: newPosition
-                )
-                newStates.append((
-                    newState: newState,
-                    movementCost: movementCost
-                ))
+                newMovements.append((from: position, to: newPosition))
             }
+        }
+        
+        var newStates: [(newState: State, movementCost: Int)] = []
+        for (oldPosition, newPosition) in newMovements {
+            let amphipod = amphipods[oldPosition]!
+            var newAmphipods = amphipods
+            newAmphipods.removeValue(forKey: oldPosition)
+            newAmphipods[newPosition] = amphipod
+            let newState = State(
+                amphipods: newAmphipods,
+                sideRoomDepths: sideRoomDepths
+            )
+            let movementCost = distance(
+                for: amphipod,
+                from: oldPosition,
+                to: newPosition
+            )
+            newStates.append((
+                newState: newState,
+                movementCost: movementCost
+            ))
         }
         
         return newStates
@@ -285,7 +286,7 @@ func printState(_ state: State) {
     }
     for amphipod in Amphipod.allTypes {
         for sideRoomY in sideRoomY..<(sideRoomY + state.sideRoomDepths) {
-            printableMap[sideRoomY][amphipod.homeXPosition] = "."
+            printableMap[sideRoomY][amphipod.sideRoomPositionX] = "."
         }
     }
     for (position, amphipod) in state.amphipods {
@@ -337,52 +338,30 @@ func parseState(input: String, puzzle: Puzzle) -> State {
 
 func findMinCostToSolvedState(
     for state: State,
-    costToReachState: Int,
-    minCostToReachStateCache: inout [State: Int],
-    minCostToSolvedStateCache: inout [State: Int?],
-    minCostToSolvedStateFound: inout Int
+    minCostToSolvedStateCache: inout [State: Int?]
 ) -> Int? {
     if state.isSolved() {
-        minCostToSolvedStateFound = costToReachState
-        print("solution Found: ", minCostToSolvedStateFound)
-        return costToReachState
+        return 0
     }
     
     if minCostToSolvedStateCache[state] != nil {
         return minCostToSolvedStateCache[state]!
     }
     
-    if minCostToReachStateCache[state, default: Int.max] < costToReachState {
-        return nil
-    }
-
-    minCostToReachStateCache[state] = costToReachState
-    
     var minCostsToSolvedState: [Int] = []
-    for (newState, movementCost) in state.getProgressiveStates() {
-//        print("-------")
-//        printState(state)
-//        printState(newState)
-//        print(costToReachState + movementCost, movementCost)
-        
-        if costToReachState + movementCost > minCostToSolvedStateFound {
-            continue
-        }
-        
+    let progressiveStates = state.getProgressiveStates()
+    for (newState, movementCost) in progressiveStates {
         let minCostToSolvedStateForNewState = findMinCostToSolvedState(
             for: newState,
-            costToReachState: costToReachState + movementCost,
-            minCostToReachStateCache: &minCostToReachStateCache,
-            minCostToSolvedStateCache: &minCostToSolvedStateCache,
-            minCostToSolvedStateFound: &minCostToSolvedStateFound
+            minCostToSolvedStateCache: &minCostToSolvedStateCache
         )
         
-        minCostToSolvedStateCache[state] = minCostToSolvedStateForNewState
         if minCostToSolvedStateForNewState != nil {
-            minCostsToSolvedState.append(minCostToSolvedStateForNewState!)
+            minCostsToSolvedState.append(movementCost + minCostToSolvedStateForNewState!)
         }
     }
     
+    minCostToSolvedStateCache[state] = minCostsToSolvedState.min()
     return minCostsToSolvedState.min()
 }
 
@@ -392,39 +371,22 @@ enum Script {
         let input = try readFileInCwd(file: "/Day-23-Input.txt")
             .trimmingCharacters(in: .whitespacesAndNewlines)
         
-        let state = parseState(input: input, puzzle: .Part1)
-        
-        printState(state)
-        
-        var minCostToReachStateCache: [State: Int] = [:]
+        let statePart1 = parseState(input: input, puzzle: .Part1)
+        printState(statePart1)
         var minCostToSolvedStateCache: [State: Int?] = [:]
-        var minCostToSolvedStateFound = Int.max
-        print(findMinCostToSolvedState(
-            for: state,
-            costToReachState: 0,
-            minCostToReachStateCache: &minCostToReachStateCache,
-            minCostToSolvedStateCache: &minCostToSolvedStateCache,
-            minCostToSolvedStateFound: &minCostToSolvedStateFound
-        ))
+        let minCostPart1 = findMinCostToSolvedState(
+            for: statePart1,
+            minCostToSolvedStateCache: &minCostToSolvedStateCache
+        )!
+        print("Part 1: ", minCostPart1)
         
-        return
-        
-//        var costToCompleteState: [State: Cost] = [:]
-//        var costToVisitState: [State: Cost] = [:]
-//        print("Part 1: ", calculateMinCost(
-//            state: state,
-//            stateCost: 0,
-//            map: map,
-//            costToCompleteState: &costToCompleteState,
-//            costToVisitState: &costToVisitState,
-//            maxRecursions: 0
-//        ))
-        
-//        let (map2, state2) = parseMapAndState(input, puzzle: .Part2)
-//        printMap(map2, with: state2)
-//
-//        print("Part 2: ", findStateUntilSolved(initialState: state2, with: map2))
+        let statePart2 = parseState(input: input, puzzle: .Part2)
+        printState(statePart2)
+        minCostToSolvedStateCache = [:]
+        let minCostPart2 = findMinCostToSolvedState(
+            for: statePart2,
+            minCostToSolvedStateCache: &minCostToSolvedStateCache
+        )!
+        print("Part 2: ", minCostPart2)
     }
 }
-
-//upper bound for part 2: 117596
