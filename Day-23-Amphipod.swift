@@ -41,7 +41,7 @@ struct Position: Hashable {
 struct State: Hashable {
     let amphipods: [Position: Amphipod]
     let sideRoomDepths: Int
-    
+
     static func == (lhs: State, rhs: State) -> Bool {
         if lhs.amphipods.count != lhs.amphipods.count {
             return false
@@ -55,6 +55,10 @@ struct State: Hashable {
     }
     
     func hash(into hasher: inout Hasher) {
+        /// We need to make sure the hasher sorts the positions of the
+        /// amphipods in a particular order so that `amphipods` in an
+        /// identical arrangement but a different order cannot be
+        /// incorrectly hashed.
         let sortedAmphipods = amphipods.sorted {
             if $0.key.y < $1.key.y {
                 return false
@@ -74,23 +78,25 @@ struct State: Hashable {
         }
     }
     
+    /// Returns the distance from one position to another.
     func distance(
         for amphipod: Amphipod,
         from: Position,
         to: Position
     ) -> Int {
         var distance = 0
-        /// Travel up, if we're not in the same hallway.
+        /// Travel up, if we're not in the same side-room.
         if from.x != to.x && from.y != hallwayY {
             distance += from.y - hallwayY
         }
-        /// Travel left-right.
+        /// Travel along the hallway.
         distance += abs(from.x - to.x)
-        /// Travel down.
+        /// Travel down the side-room.
         distance += to.y - hallwayY
         return distance * amphipod.movementCost
     }
     
+    /// Returns true if all the amphipods are in the right position.
     func isSolved() -> Bool {
         for (position, amphipod) in amphipods {
             if amphipod.sideRoomPositionX != position.x {
@@ -100,19 +106,35 @@ struct State: Hashable {
         return true
     }
     
-    /// Determines whether or not the amphipod should move.
+    /// Returns true if the side-room for `amphipod` is complete. In other
+    /// words, all the amphipods are in the correct side-room.
     func isSolved(for amphipod: Amphipod) -> Bool {
-        var positionY = sideRoomY
-        while positionY != sideRoomY + sideRoomDepths {
-            let position = Position(x: amphipod.sideRoomPositionX, y: positionY)
-            if amphipods[position] != amphipod {
+        let filteredAmphipods = amphipods.filter ({ $0.value == amphipod })
+        for (position, amphipod) in filteredAmphipods {
+            if amphipod.sideRoomPositionX != position.x {
                 return false
             }
-            positionY += 1
         }
         return true
     }
+    
+    /// Returns true if the amphipod is in the correct position, and all other
+    /// amphipods beneath it in the side-room are all the same type.
+    func isSolved(for amphipod: Amphipod, at position: Position) -> Bool {
+        if position.x == amphipod.sideRoomPositionX {
+            for positionY in position.y..<(sideRoomY + sideRoomDepths) {
+                let sideRoomPosition = Position(x: position.x, y: positionY)
+                if amphipods[sideRoomPosition] != amphipod {
+                    return false
+                }
+            }
+            return true
+        }
+        return false
+    }
 
+    /// Returns true if an amphipod in `position` can travel up the side-room.
+    /// If there is an amphipod in the way, it cannot travel up.
     func isHallwayAccessible(from position: Position) -> Bool {
         var positionY = sideRoomY
         while positionY < position.y {
@@ -124,10 +146,12 @@ struct State: Hashable {
         return true
     }
     
-    func accessibleHallwayPositions(from: Position) -> [Position] {
+    /// Returns all the positions in the hallway that can be accessed from
+    /// `position`. Entrances to the side-rooms are excluded.
+    func accessibleHallwayPositions(from position: Position) -> [Position] {
         var positions: [Position] = []
         
-        var leftPositionX = from.x - 1
+        var leftPositionX = position.x - 1
         while leftPositionX >= hallwayMinX {
             let newPosition = Position(x: leftPositionX, y: hallwayY)
             if sideRoomXs.contains(leftPositionX) {
@@ -141,7 +165,7 @@ struct State: Hashable {
             leftPositionX -= 1
         }
         
-        var rightPositionX = from.x + 1
+        var rightPositionX = position.x + 1
         while rightPositionX <= hallwayMaxX {
             let newPosition = Position(x: rightPositionX, y: hallwayY)
             if sideRoomXs.contains(rightPositionX) {
@@ -157,21 +181,48 @@ struct State: Hashable {
         return positions
     }
     
-    func accessibleSideRoom(for amphipod: Amphipod) -> Position? {
+    /// Returns whether or not an amphipod enter the side room, ignoring
+    /// whether or not the hallway is blocked. An amphipod can enter
+    /// only if there are no other amphipod types, and there is at least one
+    /// free space. The bottom most free space is returned first.
+    func accessibleSideRoomPosition(for amphipod: Amphipod) -> Position? {
+        /// If there is a different type of amphipod in the side-room,
+        /// don't let any other amphipod enter.
+        /// It's not obvious that this restriction is necessary, since
+        /// technically it should be allowed for an amphipod to enter
+        /// the side room, because it could be used as a strategy to
+        /// minimise cost. But apparently if we don't have this
+        /// restriction, we end up with too many recursive solutions!
+        /// I have discovered a truly marvelous demonstration of this
+        /// proposition that this margin is too narrow to contain.
+        for positionY in sideRoomY..<sideRoomY + sideRoomDepths {
+            let position = Position(
+                x: amphipod.sideRoomPositionX,
+                y: positionY
+            )
+            let sideRoomAmphipod = amphipods[position]
+            if sideRoomAmphipod != amphipod && sideRoomAmphipod != nil {
+                return nil
+            }
+        }
+        
+        /// Find the bottom most available side-room.
         var positionY = sideRoomY + sideRoomDepths - 1
         while positionY != hallwayY {
-            let position = Position(x: amphipod.sideRoomPositionX, y: positionY)
+            let position = Position(
+                x: amphipod.sideRoomPositionX,
+                y: positionY
+            )
             if amphipods[position] == nil {
                 return position
-            }
-            if amphipods[position] != amphipod {
-                return nil
             }
             positionY -= 1
         }
         return nil
     }
     
+    /// Return `true` if the spaces in the hallway between `from` and `to` are
+    /// all empty. The range is not inclusive.
     func hallwayFreeBetween(from: Int, to: Int) -> Bool {
         let direction = from < to ? 1 : -1
         var positionX = from + direction
@@ -183,23 +234,33 @@ struct State: Hashable {
         }
         return true
     }
-    
+
+    /// Returns all the possible movements for a single amphipod that could
+    /// actually bring us closer to solving the amphipod's problem.
     func getProgressiveMovements(
         position: Position,
         amphipod: Amphipod
     ) -> [Position] {
         /// Amphipods in the hallway can only go into side-rooms they belong to.
         if position.y == hallwayY {
-            guard let sideRoom = accessibleSideRoom(for: amphipod) else {
+            /// Can the amphipod travel to the side-room?
+            if !hallwayFreeBetween(
+                from: position.x,
+                to: amphipod.sideRoomPositionX
+            ) {
                 return []
             }
-            if hallwayFreeBetween(from: position.x, to: sideRoom.x) {
+            /// Can the amphipod even enter the side-room?
+            if let sideRoom = accessibleSideRoomPosition(for: amphipod) {
                 return [sideRoom]
             }
             return []
         }
+        /// Amphipods already in a side-room can go up into the hallway, or
+        /// directly to their desired side-room.
         if position.y > hallwayY {
-            /// Don't recommend moving amphipods for rooms that are complete!
+            /// We don't recommend moving amphipods for rooms that are
+            /// already complete!
             if isSolved(for: amphipod) {
                 return []
             }
@@ -208,33 +269,32 @@ struct State: Hashable {
                 return []
             }
             
-            if position.x == amphipod.sideRoomPositionX {
-                var bottom = true
-                for positionY in position.y..<(sideRoomY + sideRoomDepths) {
-                    if amphipods[Position(x: position.x, y: positionY)] == nil {
-                        print("It's halwayts up its room?")
-                        exit(8)
-                    }
-                    if amphipods[Position(x: position.x, y: positionY)] != amphipod {
-                        bottom = false
-                    }
-                }
-                if bottom {
-                    return []
-                }
+            /// If the amphipod is in the right room, and it sitting on top
+            /// of other amphipods of the same type, then don't let
+            /// the amphipod move!
+            if isSolved(for: amphipod, at: position) {
+                return []
             }
             
-            if let sideRoom = accessibleSideRoom(for: amphipod) {
+            /// If the amphipod is in a side-room and has access to the
+            /// desired side-room, and the desired side-room doesn't have
+            /// any other amphipods of a different type, then direct them
+            /// to that destination without giving any other choice!
+            if let sideRoom = accessibleSideRoomPosition(for: amphipod) {
                 if hallwayFreeBetween(from: position.x, to: sideRoom.x) {
                     return [sideRoom]
                 }
             }
 
+            /// If the amphipod cannot enter their side-room, then just let
+            /// them mull about in the hallway.
             return accessibleHallwayPositions(from: position)
         }
         return []
     }
-                                       
+
+    /// Returns all the states that make progress for the amphipods from the
+    /// current state, along with the movement cost to perform the change.
     func getProgressiveStates() -> [(newState: State, movementCost: Int)] {
         var newMovements: [(from: Position, to: Position)] = []
         for (position, amphipod) in amphipods {
@@ -357,7 +417,8 @@ func findMinCostToSolvedState(
         )
         
         if minCostToSolvedStateForNewState != nil {
-            minCostsToSolvedState.append(movementCost + minCostToSolvedStateForNewState!)
+            let totalCost = movementCost + minCostToSolvedStateForNewState!
+            minCostsToSolvedState.append(totalCost)
         }
     }
     
