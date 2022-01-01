@@ -28,6 +28,7 @@ My attempts at the [Advent of Code 2021](https://adventofcode.com/2021) challeng
 * [![Day-22-Reactor-Reboot](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-22.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-22.yml?query=branch%3Amain)
 * [![Day-23-Amphipod](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-23.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-23.yml?query=branch%3Amain)
 * [![Day-24-Arithmetic-Logic-Unit](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-24.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-24.yml?query=branch%3Amain)
+* [![Day-25-Sea-Cucumber](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-25.yml/badge.svg?branch=main)](https://github.com/leifgehrmann/advent-of-code-2021/actions/workflows/Day-25.yml?query=branch%3Amain)
 
 † _A solution was found, but only by iteratively solving the puzzle piece-wise and inserting the results back into the code, essentially hard-coding the solution. It also performs sub-optimally, taking dozens of minutes to execute._ 
 
