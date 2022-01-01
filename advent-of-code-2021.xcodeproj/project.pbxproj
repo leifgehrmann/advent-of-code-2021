@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		34565C5527720E2C00C2FFD0 /* Day-22-Reactor-Reboot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34565C5427720E2800C2FFD0 /* Day-22-Reactor-Reboot.swift */; };
 		34565C592775287900C2FFD0 /* Day-23-Amphipod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34565C582775287800C2FFD0 /* Day-23-Amphipod.swift */; };
+		34565C5D27759B2B00C2FFD0 /* Day-24-Arithmetic-Logic-Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34565C5C27759B2B00C2FFD0 /* Day-24-Arithmetic-Logic-Unit.swift */; };
 		B637EE4F2759E05C00B1F5CE /* Day-03-Binary-Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B637EE4E2759E05C00B1F5CE /* Day-03-Binary-Diagnostic.swift */; };
 		B637EE5C275AB4FB00B1F5CE /* Day-04-Giant-Squid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B637EE5B275AB4FB00B1F5CE /* Day-04-Giant-Squid.swift */; };
 		B6578378276A796F009D34F0 /* Day-16-Packet-Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6578377276A796F009D34F0 /* Day-16-Packet-Decoder.swift */; };
@@ -292,6 +293,9 @@
 		34565C582775287800C2FFD0 /* Day-23-Amphipod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-23-Amphipod.swift"; sourceTree = "<group>"; };
 		34565C5A2775288700C2FFD0 /* Day-23-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-23-Input.txt"; sourceTree = "<group>"; };
 		34565C5B277528B300C2FFD0 /* Day-23.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-23.yml"; path = ".github/workflows/Day-23.yml"; sourceTree = "<group>"; };
+		34565C5C27759B2B00C2FFD0 /* Day-24-Arithmetic-Logic-Unit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Day-24-Arithmetic-Logic-Unit.swift"; sourceTree = "<group>"; };
+		34565C5E27759B3600C2FFD0 /* Day-24-Input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Day-24-Input.txt"; sourceTree = "<group>"; };
+		34565C5F27759B4100C2FFD0 /* Day-24.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "Day-24.yml"; path = ".github/workflows/Day-24.yml"; sourceTree = "<group>"; };
 		B637EE41274EE69200B1F5CE /* Day-02.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = "Day-02.yml"; path = ".github/workflows/Day-02.yml"; sourceTree = "<group>"; };
 		B637EE42274EF4A600B1F5CE /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B637EE4327502C3700B1F5CE /* Day-01-Input.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Day-01-Input.txt"; sourceTree = "<group>"; };
@@ -633,6 +637,7 @@
 				B664145027708B25006A6951 /* Day-21.yml */,
 				34565C5727720E4D00C2FFD0 /* Day-22.yml */,
 				34565C5B277528B300C2FFD0 /* Day-23.yml */,
+				34565C5F27759B4100C2FFD0 /* Day-24.yml */,
 			);
 			name = "GitHub Workflows";
 			sourceTree = "<group>";
@@ -687,6 +692,8 @@
 				34565C5627720E3A00C2FFD0 /* Day-22-Input.txt */,
 				34565C582775287800C2FFD0 /* Day-23-Amphipod.swift */,
 				34565C5A2775288700C2FFD0 /* Day-23-Input.txt */,
+				34565C5C27759B2B00C2FFD0 /* Day-24-Arithmetic-Logic-Unit.swift */,
+				34565C5E27759B3600C2FFD0 /* Day-24-Input.txt */,
 			);
 			name = Scripts;
 			sourceTree = "<group>";
@@ -1388,6 +1395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B660E29B275C0A79003F5072 /* InputReader.swift in Sources */,
+				34565C5D27759B2B00C2FFD0 /* Day-24-Arithmetic-Logic-Unit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
